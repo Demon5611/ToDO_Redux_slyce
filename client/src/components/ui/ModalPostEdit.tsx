@@ -56,7 +56,8 @@ export default function ModalPost({ isOpen, post, onClose }: ModalPostEdit): JSX
             variant="outlined"
             size="large"
             onClick={() => {
-              void dispatch(updatePostThunk(inputs, post.id));
+    
+              void dispatch(updatePostThunk({ name: inputs.name, id: post.id }));
               setInputs({ name: '' }); // очистили
               onClose();
             }}

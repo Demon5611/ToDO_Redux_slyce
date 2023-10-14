@@ -29,38 +29,38 @@ router.post('/one',async(req,res)=>{
 }); 
   
   
-  router.patch('/:id', async (req, res) => {
-    console.log('Received data:', req.body);
-    try {
-      const { id } = req.params;
-      const { name } = req.body;
-      const [updatedRows] = await ToDo.update({
-          name,
+router.patch('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, status } = req.body;
+    await ToDo.update(
+      {
+        name,
+        status
+    },
+      {    where: {
+          id,
+          Uid: req.session?.user?.id,
         },
-        { where: {id, Uid: req.session?.user?.id}  },
-        );
+      },
+    );
+    const updatedPost = await ToDo.findOne();
+    return res.json(updatedPost);
+  } catch (err) {
+    console.error(err);
+    return res.sendStatus(500);
+  }
+});
 
-      // console.log({updatedRows, reqbody: req.body})
-      if (updatedRows === 0) {
-        return res.status(400).json({ message: 'Запись не найдена' });
-      }
-      const updatedTodo = await ToDo.findOne({ where:{ id: req.params.id } });
-      if (!updatedTodo) {
-        return res.status(400).json({ message: 'Запись не найдена' });
-      }
-      res.status(200).json(updatedTodo);
-    } catch (error) {
-      res.status(400).json({ message: error.message });
-    }
-  });
+
   
 
   // изменение статуса ok
-  router.patch('/post/newstatus/:id/edit', async (req, res) =>{
-    const { status } = req.body
-  await ToDo.update({status},{ where: { id: req.params.id } });
-    res.sendStatus(200);
-  });
+  // router.patch('/post/newstatus/:id/edit', async (req, res) =>{
+  //   const { status } = req.body
+  // await ToDo.update({status},{ where: { id: req.params.id } });
+  //   res.sendStatus(200);
+  // });
 
 
 router.delete('/:id', async (req, res) => {
