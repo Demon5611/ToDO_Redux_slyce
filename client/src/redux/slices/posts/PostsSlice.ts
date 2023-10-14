@@ -21,9 +21,13 @@ export const postsSlice = createSlice({
     );
     builder.addCase(deletePostThunk.rejected, (state, action) => state);
 
+    // builder.addCase(updatePostThunk.fulfilled, (state, action) => {
+    //   const index = state.findIndex((el) => el.id === action.payload.id);
+    //   state[index] = action.payload;
+    // });
+
     builder.addCase(updatePostThunk.fulfilled, (state, action) => {
-      const index = state.findIndex((el) => el.id === action.payload.id);
-      state[index] = action.payload;
+      state = state.map((el) => (el.id === action.payload.id ? action.payload : el));
     });
     // check-box
     // builder.addCase(updatePosThunk.fulfilled, (state, action) => {

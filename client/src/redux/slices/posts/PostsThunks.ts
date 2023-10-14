@@ -19,7 +19,9 @@ export const addPostThunk = createAsyncThunk<PostType, PostFormType>(
 export const updatePostThunk = createAsyncThunk<PostType, { name: string; id: number }>('post/updatePost', async  (inputs) => {
   const response = await apiService.patch<PostType>(`/post/${inputs.id}`, inputs)
 
-    return response.data}
+  console.log(' response.data======>>',  response.data)
+  return response.data
+}
 );
 
 // check-box

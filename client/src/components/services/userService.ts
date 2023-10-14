@@ -8,6 +8,7 @@ import apiService from './config';
 
 export const checkUser = async (): Promise<UserType> => {
   const { data } = await apiService<UserType>('/user/check');
+
   return data;
 };
 

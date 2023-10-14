@@ -32,25 +32,28 @@ router.post('/one',async(req,res)=>{
 router.patch('/:id', async (req, res) => {
   try {
     const { id } = req.params;
+    console.log('id====><', id)
     const { name, status } = req.body;
+    console.log('req.body================><', req.body)
     await ToDo.update(
       {
-        name,
-        status
+        name      
     },
       {    where: {
-          id,
-          Uid: req.session?.user?.id,
-        },
+        id,
+        Uid: req.session?.user?.id,
       },
+    },
     );
     const updatedPost = await ToDo.findOne();
+    console.log('updatedPost============><', updatedPost)
     return res.json(updatedPost);
   } catch (err) {
     console.error(err);
     return res.sendStatus(500);
   }
 });
+
 
 
   
