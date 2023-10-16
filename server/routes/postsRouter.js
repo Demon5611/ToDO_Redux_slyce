@@ -1,11 +1,19 @@
 const express = require('express');
 const { ToDo } = require('../db/models');
 
+
+
+
 const router = express.Router();
-// all posts
+
+// отображаем только посты автора
 router.get('/all', async (req, res) => {
   try {
-    const todo = await ToDo.findAll();
+    const todo = await ToDo.findAll({
+      where: {
+        Uid: req.session?.user?.id,
+      },
+    });
     res.json(todo);
   } catch (error) {
     console.error(error);
@@ -14,7 +22,7 @@ router.get('/all', async (req, res) => {
 });
 
 // add new post
-router.post('/one',async(req,res)=>{
+router.post('/one', async(req,res)=>{
   try{
    const newTodo= await ToDo.create({
        name:req.body.name,
@@ -29,7 +37,7 @@ router.post('/one',async(req,res)=>{
 }); 
   
   
-router.patch('/:id', async (req, res) => {
+router.patch('/:id',  async (req, res) => {
   try {
     const { id } = req.params;
     const { name, status } = req.body;
@@ -63,7 +71,7 @@ router.patch('/:id', async (req, res) => {
   // });
 
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id',  async (req, res) => {
   try {
     await ToDo.destroy({ where: { id: req.params.id } });
     res.sendStatus(200);
@@ -72,5 +80,8 @@ router.delete('/:id', async (req, res) => {
     res.sendStatus(500);
   }
 });
+
+
+
 
 module.exports = router;

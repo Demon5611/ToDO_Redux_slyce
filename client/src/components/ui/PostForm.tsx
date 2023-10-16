@@ -1,16 +1,13 @@
 import { Box, Button, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { useAppDispatch } from '../../redux/hooks';
-import { addPostThunk} from '../../redux/slices/posts/PostsThunks';
-
-
+import { addPostThunk } from '../../redux/slices/posts/PostsThunks';
 
 export default function PostsForm(): JSX.Element {
   const dispatch = useAppDispatch();
   const [inputs, setInputs] = useState({ name: '' });
 
-
-  // ловим изменения на поле ввода 
+  // ловим изменения на поле ввода
   const changeHandler: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -24,7 +21,7 @@ export default function PostsForm(): JSX.Element {
         value={inputs.name}
         onChange={changeHandler}
       />
-  
+      <br />
       <Button
         variant="outlined"
         size="large"

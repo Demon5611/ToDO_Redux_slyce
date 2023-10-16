@@ -2,10 +2,14 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import apiService from '../../../components/services/config';
 import type { UserLoginType, UserSignUpType, UserType } from '../../../types/userTypes';
 
+
 export const checkUserThunk = createAsyncThunk<UserType>('user/checkUserThunk', async () => {
   const { data } = await apiService<UserType>('/user/check');
   return data;
 });
+// проверка наличия куки пользователя. браузер запомнит и сразу авторизует
+
+
 
 export const loginHandlerThunk = createAsyncThunk<UserType, UserLoginType>(
   'user/loginHandlerThunk',

@@ -50,11 +50,14 @@ router.post('/login', async (req, res) => {
 });
 
 router.get('/check', (req, res) => {
-  if (req.session.user) {
+  if (req.session.user)
+  {
     return res.json(req.session.user);
   }
   return res.sendStatus(401);
 });
+// проверка наличия куки пользователя. браузер запомнит и сразу авторизует 
+
 
 router.get('/logout', (req, res) => {
   req.session.destroy();

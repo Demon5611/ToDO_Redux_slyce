@@ -22,7 +22,7 @@ function App(): JSX.Element {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(checkUserThunk());
+  void  dispatch(checkUserThunk());
   }, []);
 
   const user = useAppSelector((store) => store.user);

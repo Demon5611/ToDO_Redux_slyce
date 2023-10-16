@@ -1,4 +1,3 @@
-import { Button } from '@mui/material';
 import React, { useState } from 'react';
 import { useAppSelector } from '../../redux/hooks';
 import type { PostType } from '../../types/postTypes';
@@ -6,18 +5,18 @@ import ModalPost from './ModalPostEdit';
 import PostItem from './PostItem';
 
 export default function PostsList(): JSX.Element {
-  // модалка=====================================
   const post = useAppSelector((store) => store.posts);
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectPost, setSelectPost] = useState<PostType | null>(null);
 
-  // открыть модалку
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedPost, setSelectedPost] = useState<PostType | null>(null);
+
   const handleOpen = (post: PostType): void => {
-    setSelectPost(post);
+    setSelectedPost(post);
     setIsOpen(true);
   };
-  // закрыть модалку
+
   const handleClose = (): void => {
+    setSelectedPost(null);
     setIsOpen(false);
   };
 
@@ -25,11 +24,11 @@ export default function PostsList(): JSX.Element {
     <div>
       {post?.map((el) => (
         <div key={el.id}>
-          <PostItem post={el} />
-          <Button onClick={() => handleOpen(el)}>Edit</Button>
+          <PostItem post={el} onEditClick={() => handleOpen(el)} />
         </div>
       ))}
-      {selectPost && <ModalPost isOpen={isOpen} post={selectPost} onClose={handleClose} />}
+      {selectedPost && <ModalPost isOpen={isOpen} post={selectedPost} onClose={handleClose} />}
+      <p>* Отображаются посты только, принадлежащие автору</p>
     </div>
   );
 }
