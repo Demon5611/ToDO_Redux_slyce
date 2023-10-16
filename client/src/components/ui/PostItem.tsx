@@ -1,4 +1,6 @@
-import { Card, CardContent, Checkbox, Button, Typography, Box } from '@mui/material';
+import { Box, Button, Card, CardContent, Checkbox, Typography } from '@mui/material';
+import formatDistanceToNow from 'date-fns/formatDistanceToNow';
+import locale from 'date-fns/locale/ru';
 import React, { useState } from 'react';
 import { useAppDispatch } from '../../redux/hooks';
 import { deletePostThunk } from '../../redux/slices/posts/PostsThunks';
@@ -10,6 +12,7 @@ type PostItemPropsType = {
 };
 
 export default function PostItem({ post, onEditClick }: PostItemPropsType): JSX.Element {
+  const createDate = formatDistanceToNow(new Date(post.createdAt), { addSuffix: true, locale });
   const dispatch = useAppDispatch();
   const [checked, setChecked] = useState(false);
 
@@ -40,6 +43,7 @@ export default function PostItem({ post, onEditClick }: PostItemPropsType): JSX.
             </Button>
           </Box>
         </Box>
+        {createDate}
       </CardContent>
     </Card>
   );

@@ -10,7 +10,7 @@ export default function PostsList(): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState<PostType | null>(null);
 
-  const handleOpen = (post: PostType): void => {
+  const handleOpen =  (post: PostType): void => {
     setSelectedPost(post);
     setIsOpen(true);
   };

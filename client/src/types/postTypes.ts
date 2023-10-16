@@ -1,4 +1,5 @@
 export type PostType = {
+  [x: string]: string | number | Date;
     id: number;
     name: string;
   status?: boolean;
