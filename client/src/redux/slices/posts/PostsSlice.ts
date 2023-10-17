@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PostType } from '../../../types/postTypes';
-import { addPostThunk, deletePostThunk, getPostsThunk, updatePostThunk } from './PostsThunks';
+import { addPostThunk, deletePostThunk, getPostsThunk, updatePostThunk, updateCheckBoxThunk } from './PostsThunks';
 
 type PostsState = PostType[];
 const initialState: PostsState = [];
@@ -21,24 +21,17 @@ export const postsSlice = createSlice({
     );
     builder.addCase(deletePostThunk.rejected, (state, action) => state);
 
-
-  
-    // builder.addCase(updatePostThunk.fulfilled, (state, action) => {
-    //   const index = state.findIndex((el) => el.id === action.payload.id);
-    //   state[index] = action.payload;
-    // });
-  // можно и так 
     builder.addCase(updatePostThunk.fulfilled, (state, action) => {
       state = state.map((el) => (el.id === action.payload.id ? action.payload : el));
     });
 
 
     // check-box
-    // builder.addCase(updatePosThunk.fulfilled, (state, action) => {
-    //   const index = state.findIndex(el=>el.id === action.payload.id)
-    //   state[index] = action.payload
-    // })
-  },
+    builder.addCase(updateCheckBoxThunk.fulfilled, (state, action) => {
+      const index = state.findIndex(el=>el.id === action.payload.id)
+      state[index] = action.payload
+    })
+  },  
 });
 
 export default postsSlice.reducer;

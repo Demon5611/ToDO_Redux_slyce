@@ -10,4 +10,4 @@ export const store = configureStore({
 });
 
 export type RootState = ReturnType<typeof store.getState>; // типизируем наш стейт
-export type AppDispatch = typeof store.dispatch; // типизируем наш диспатч
+export type AppDispatch = typeof store.dispatch; // типизируем наш диспатч что бы работать с хуками

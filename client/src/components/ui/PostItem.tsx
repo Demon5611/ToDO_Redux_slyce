@@ -15,7 +15,7 @@ export default function PostItem({ post, onEditClick }: PostItemPropsType): JSX.
   const createDate = formatDistanceToNow(new Date(post.createdAt), { addSuffix: true, locale });
   const dispatch = useAppDispatch();
 
-  const [isChecked, setIsChecked] = useState(post.status);
+  const [isChecked, setIsChecked] = useState(false);
   const [isStriked, setIsStriked] = useState(false);
 
   const handleCheckboxChange: React.ChangeEventHandler<HTMLInputElement> = async (event) => {
@@ -38,7 +38,11 @@ export default function PostItem({ post, onEditClick }: PostItemPropsType): JSX.
               inputProps={{ 'aria-label': 'controlled' }}
             />
             <Typography
-              sx={{ fontSize: 16, cursor: 'pointer', textDecoration: isStriked ? 'line-through' : 'none' }}
+              sx={{
+                fontSize: 16,
+                cursor: 'pointer',
+                textDecoration: isStriked ? 'line-through' : 'none',
+              }}
               color="text.secondary"
               gutterBottom
             >

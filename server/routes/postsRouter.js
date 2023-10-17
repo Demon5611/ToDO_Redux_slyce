@@ -59,9 +59,6 @@ router.patch('/:id',  async (req, res) => {
     return res.sendStatus(500);
   }
 });
-
-
-
   
 
   // изменение статуса ok
