@@ -65,11 +65,12 @@ router.patch('/:id',  async (req, res) => {
   
 
   // изменение статуса ok
-  // router.patch('/post/newstatus/:id/edit', async (req, res) =>{
-  //   const { status } = req.body
-  // await ToDo.update({status},{ where: { id: req.params.id } });
-  //   res.sendStatus(200);
-  // });
+  router.patch('/post/newstatus/:id', async (req, res) =>{
+    const { status } = req.body
+    console.log('req.body', req.body)
+  await ToDo.update({status},{ where: { id: req.params.id } });
+    res.sendStatus(200);
+  });
 
 
 router.delete('/:id',  async (req, res) => {
