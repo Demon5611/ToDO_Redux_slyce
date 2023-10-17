@@ -62,23 +62,20 @@ router.patch('/:id',  async (req, res) => {
   
 
   // изменение статуса ok
-  router.patch('/post/newstatus/:id', async (req, res) =>{
-    const { status } = req.body
-    console.log('req.body', req.body)
-  await ToDo.update({status},{ where: { id: req.params.id } });
-    res.sendStatus(200);
+  router.patch('/post/newstatus/:id', async (req, res) => {
+    const { status } = req.body;
+    const { id } = req.params; // Извлекаем параметр 'id' из URL
+  
+    // Теперь 'status' содержит значение из тела запроса, и 'id' - значение из URL
+  
+    try {
+      await ToDo.update({ status }, { where: { id } });
+      res.sendStatus(200);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
   });
-
-
-router.delete('/:id',  async (req, res) => {
-  try {
-    await ToDo.destroy({ where: { id: req.params.id } });
-    res.sendStatus(200);
-  } catch (err) {
-    console.error(err);
-    res.sendStatus(500);
-  }
-});
 
 
 

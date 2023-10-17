@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   ToDo.init({
     name: DataTypes.STRING,
+    status: DataTypes.STRING,
     Uid: DataTypes.INTEGER
   }, {
     sequelize,

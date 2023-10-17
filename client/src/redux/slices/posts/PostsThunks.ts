@@ -26,11 +26,12 @@ export const updatePostThunk = createAsyncThunk<PostType, { name: string; id: nu
 
 // check-box
 export const updateCheckBoxThunk = createAsyncThunk<
-PostType,
-{ formData: PostFormType; id: PostType['id'] }
->('post/updateCheckBox', (formData) =>
-apiService.patch<PostType>(`/post/newstatus/${formData.id}`, formData).then((res) => res.data),
-);
+  PostType,
+  { formData: PostFormType; id: PostType['id'] }
+>('post/updateCheckBox', (formData) => {
+  console.log('formData', formData);
+  return apiService.patch<PostType>(`/post/newstatus/${formData.id}`, formData).then((res) => res.data);
+});
 
 
 export const deletePostThunk = createAsyncThunk<PostType['id'], { id: PostType['id'] }>(

@@ -33,7 +33,9 @@ export default function PostItem({ post, onEditClick }: PostItemPropsType): JSX.
               onChange={handleCheckboxChange}
               checked={isChecked}
               onClick={() => {
-                void dispatch(updateCheckBoxThunk(isChecked));
+                void dispatch(
+                  updateCheckBoxThunk({ formData: { id: post.id, status: isChecked } }),
+                );
               }}
               inputProps={{ 'aria-label': 'controlled' }}
             />

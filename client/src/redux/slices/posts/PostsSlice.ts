@@ -2,13 +2,13 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PostType } from '../../../types/postTypes';
 import { addPostThunk, deletePostThunk, getPostsThunk, updatePostThunk, updateCheckBoxThunk } from './PostsThunks';
 
-type PostsState = PostType[];
-const initialState: PostsState = [];
+type PostsState = PostType[]; // описали тип, как будет выглядеть стейт 
+const initialState: PostsState = []; // передали стейт в initialState
 
 export const postsSlice = createSlice({
   name: 'posts',
   initialState,
-  reducers: {},
+  reducers: {}, // здесь можем типизировать addCase(reducers:{state, action: PayloadAction<string>){..}})
   extraReducers: (builder) => {
     builder.addCase(getPostsThunk.fulfilled, (state, action) => action.payload);
     builder.addCase(getPostsThunk.rejected, (state, action) => []);
