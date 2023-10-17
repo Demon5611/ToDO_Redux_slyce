@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { createSlice } from '@reduxjs/toolkit';
 import type { UserLoadingType } from '../../../types/userTypes';
 import {
@@ -5,6 +6,7 @@ import {
   loginHandlerThunk,
   logoutHandlerThunk,
   signUpHandlerThunk,
+  upDateHandlerThunk,
 } from './UserThunks';
 
 type UserState = UserLoadingType;
@@ -38,6 +40,11 @@ export const userSlice = createSlice({
       status: 'guest',
     }));
     builder.addCase(logoutHandlerThunk.fulfilled, (state) => ({ status: 'guest' }));
+    builder.addCase(upDateHandlerThunk.fulfilled, (state, action) => ({
+      ...action.payload,
+      status: 'logged',
+    }));
+    builder.addCase(upDateHandlerThunk.rejected, (state) => ({ status: 'guest' }));
   },
 });
 

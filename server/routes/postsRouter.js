@@ -45,7 +45,8 @@ router.patch('/:id',  async (req, res) => {
       {
         name      
     },
-      {    where: {
+      {
+        where: {
         id,
         Uid: req.session?.user?.id,
       },

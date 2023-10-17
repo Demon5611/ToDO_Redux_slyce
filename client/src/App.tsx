@@ -45,7 +45,7 @@ function App(): JSX.Element {
                 <Route
                   path="/admin"
                   element={
-                    <PrivateRoute isAllowed={user.status === 'logged' && user.username === 'admin'}>
+                    <PrivateRoute isAllowed={user.status === 'logged' || user.username === 'admin'}>
                       <AdminPage />
                     </PrivateRoute>
                   }

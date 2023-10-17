@@ -2,15 +2,11 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import apiService from '../../../components/services/config';
 import type { UserLoginType, UserSignUpType, UserType } from '../../../types/userTypes';
 
-
 export const checkUserThunk = createAsyncThunk<UserType>('user/checkUserThunk', async () => {
   const { data } = await apiService<UserType>('/user/check');
   return data;
 });
 // проверка наличия куки пользователя. браузер запомнит и сразу авторизует
-
-
-
 export const loginHandlerThunk = createAsyncThunk<UserType, UserLoginType>(
   'user/loginHandlerThunk',
   async (formData) => {
@@ -43,3 +39,18 @@ export const logoutHandlerThunk = createAsyncThunk('user/logoutHandlerThunk', as
     return { status: 'guest' };
   }
 });
+
+export const upDateHandlerThunk = createAsyncThunk<UserType, UserType>(
+  'user/upDateHandlerThunk',
+  async (formValues) => {
+    if (formValues.id === undefined || typeof formValues.id !== 'number') {
+      throw new Error('Invalid user ID');
+    }
+    try {
+      await apiService.patch(`/auth/update/${formValues.id}`, formValues);
+      console.log('Data updated successfully');
+    } catch (error) {
+      console.error('Error updating data upDateHandlerThunk===>:', error);
+    }
+  },
+);

@@ -56,12 +56,41 @@ router.get('/check', (req, res) => {
   }
   return res.sendStatus(401);
 });
+
+
 // проверка наличия куки пользователя. браузер запомнит и сразу авторизует 
-
-
 router.get('/logout', (req, res) => {
   req.session.destroy();
   res.clearCookie('sid').sendStatus(200);
 });
+
+
+// обновление данных пользователя на админ странице
+router.patch('/update/:id', async (req, res) =>
+{
+  try {
+    const { email, password, username } = req.body;
+  const hashPassword = await bcrypt.hash(password, 10);
+  const [user, created] = await User.update({
+    where: { email },
+    defaults: {
+      email, username, password: hashPassword,
+    },
+  });
+  const { id } = req.params;
+  await User.findOne(req.body, { where: { id } });
+  if (created)
+  {
+    req.session.user = { ...user.get(), hashPassword: undefined };
+    return res.sendStatus(200);
+  } else  {
+    return res.status(400).json({ message: 'Email already exists' });
+  } 
+
+  } catch (error) {
+    res.status(500).json({ message: 'не верный id' });
+  }
+});
+
 
 module.exports = router;

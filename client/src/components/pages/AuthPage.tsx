@@ -25,9 +25,21 @@ export default function AuthPage(): JSX.Element {
       component="form"
       onSubmit={submitHandler}
     >
-      {auth === 'signup' && <TextField variant="outlined" name="username" label="username" />}
-      <TextField variant="outlined" name="email" label="email" type="email" />
-      <TextField variant="outlined" name="password" label="password" type="password" />
+      {auth === 'signup' &&
+        <TextField
+          variant="outlined"
+          name="username"
+          label="username" />}
+      <TextField        
+        variant="outlined"
+        name="email"
+        label="email" type="email" />
+      
+      <TextField
+        variant="outlined"
+        name="password"
+        label="password"
+        type="password" />
       <Button type="submit" variant="outlined" size="large">
         {auth === 'signup' ? 'Sign Up' : 'Login'}
       </Button>

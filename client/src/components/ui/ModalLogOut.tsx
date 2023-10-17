@@ -11,9 +11,9 @@ import { logoutHandlerThunk } from '../../redux/slices/user/UserThunks';
 type ModalLog = {
   open: boolean;
   handleClick: () => void;
-  navigate: () => void;
+
 };
-export default function ModalLogOut({ open, handleClick, navigate }: ModalLog): JSX.Element {
+export default function ModalLogOut({ open, handleClick }: ModalLog): JSX.Element {
   const dispatch = useAppDispatch();
   return (
     <div>
@@ -49,7 +49,4 @@ export default function ModalLogOut({ open, handleClick, navigate }: ModalLog): 
       </Dialog>
     </div>
   );
-}
-{
-  /* navigate('/posts') */
 }
