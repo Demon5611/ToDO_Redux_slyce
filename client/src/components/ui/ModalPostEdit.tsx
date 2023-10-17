@@ -21,8 +21,9 @@ const paperStyle = {
   backgroundColor: 'white',
   borderRadius: '8px',
   width: '50%',
-  boxShadow: 24,
-  p: 2,
+  boxShadow: '24px',
+  p: '2%', // Внутренние отступы 2% по всем сторонам
+  m: '10%', // Отступы по краям от рамки 10%
 };
 
 export default function ModalPost({ isOpen, post, onClose }: ModalPostEdit): JSX.Element {
