@@ -1,5 +1,6 @@
 import { Box, Button, TextField } from '@mui/material';
 import React from 'react';
+import { Col, Nav, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch } from '../../redux/hooks';
 import { loginHandlerThunk, signUpHandlerThunk } from '../../redux/slices/user/UserThunks';
@@ -17,30 +18,28 @@ export default function AuthPage(): JSX.Element {
       : void dispatch(loginHandlerThunk(formData as UserLoginType));
   };
 
+
+  
   return (
     <Box
-      display="flex"
-      flexDirection="row"
-      alignItems="center"
+    sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      mt: -10, 
+      height: '100vh',   
+
+    }}
       component="form"
       onSubmit={submitHandler}
-    >
-      {auth === 'signup' &&
-        <TextField
-          variant="outlined"
-          name="username"
-          label="username" />}
-      <TextField        
-        variant="outlined"
-        name="email"
-        label="email" type="email" />
-      
-      <TextField
-        variant="outlined"
-        name="password"
-        label="password"
-        type="password" />
-      <Button type="submit" variant="outlined" size="large">
+    > <p>Введите свои данные</p>
+      <br/>
+      {auth === 'signup' &&          
+      <TextField variant="outlined" name="username" label="username" />}
+      <TextField sx={{m:"1% 1%"}}  variant="outlined" name="email" label="email" type="email" />
+      <TextField variant="outlined" name="password" label="password" type="password" />
+      <Button sx={{m:"1% 1%"}} type="submit" variant="outlined" size="large">
         {auth === 'signup' ? 'Sign Up' : 'Login'}
       </Button>
     </Box>

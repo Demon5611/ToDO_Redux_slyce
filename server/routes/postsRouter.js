@@ -2,8 +2,6 @@ const express = require('express');
 const { ToDo } = require('../db/models');
 
 
-
-
 const router = express.Router();
 
 // отображаем только посты автора
@@ -78,6 +76,14 @@ router.patch('/:id',  async (req, res) => {
   });
 
 
-
+  router.delete('/delete/:id', async (req, res) => {
+    try {
+      await ToDo.destroy({ where: { id: req.params.id } });
+      res.sendStatus(200);
+    } catch (err) {
+      console.error(err);
+      res.sendStatus(500);
+    }
+  });
 
 module.exports = router;

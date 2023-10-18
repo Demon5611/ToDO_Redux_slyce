@@ -8,21 +8,16 @@ import { Link as NavLink } from 'react-router-dom';
 import { useAppSelector } from '../../redux/hooks';
 import ModalLogOut from './ModalLogOut';
 
-
-
 const linkStyle = { color: 'white', mr: 2, fontFamily: 'Raleway, Arial' };
 
 export default function NavBar(): JSX.Element {
   const user = useAppSelector((store) => store.user);
 
-    const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
 
-  const handleClick  = () => {
+  const handleClick = () => {
     setOpen((prev) => !prev);
-  
   };
-
-  
 
   const links =
     user.status === 'logged'
@@ -49,15 +44,15 @@ export default function NavBar(): JSX.Element {
                 {link.name}
               </Link>
             ))}
-            <div>{user.status === 'logged' ? user.username : 'guest, only authorized user can do'}</div>
+            <div>
+              {user.status === 'logged' ? user.username : 'guest, only authorized user can do'}
+            </div>
           </Box>
           <Box>
             {user.status === 'logged' && (
-              <Button variant="text" sx={linkStyle} 
-              onClick ={handleClick}          >
+              <Button variant="text" sx={linkStyle} onClick={handleClick}>
                 Logout
               </Button>
-              
             )}
           </Box>
         </Toolbar>
@@ -66,5 +61,3 @@ export default function NavBar(): JSX.Element {
     </Box>
   );
 }
-
-

@@ -1,16 +1,16 @@
 import { Box, Container, ThemeProvider, createTheme } from '@mui/material';
 import React, { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import PostsPage from './components/pages/PostPages';
-import AuthPage from './components/pages/AuthPage';
-import NavBar from './components/ui/NavBar';
-import MainPage from './components/pages/MainPage';
 import AdminPage from './components/pages/AdminPage';
 import AnotherPage from './components/pages/AnotherPage';
+import AuthPage from './components/pages/AuthPage';
+import MainPage from './components/pages/MainPage';
+import PostsPage from './components/pages/PostPages';
+import NavBar from './components/ui/NavBar';
+import Loader from './hocs/Loader';
 import PrivateRoute from './hocs/PrivateRoute';
 import { useAppDispatch, useAppSelector } from './redux/hooks';
 import { checkUserThunk } from './redux/slices/user/UserThunks';
-import Loader from './hocs/Loader';
 
 function App(): JSX.Element {
   const theme = createTheme({
@@ -22,7 +22,7 @@ function App(): JSX.Element {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-  void  dispatch(checkUserThunk());
+    void dispatch(checkUserThunk());
   }, []);
 
   const user = useAppSelector((store) => store.user);
@@ -50,7 +50,6 @@ function App(): JSX.Element {
                     </PrivateRoute>
                   }
                 />
-
                 <Route
                   path="/:auth"
                   element={

@@ -37,7 +37,7 @@ export const updateCheckBoxThunk = createAsyncThunk<
 export const deletePostThunk = createAsyncThunk<PostType['id'], { id: PostType['id'] }>(
   'posts/deletePost',
   async ({ id }) => {
-    await apiService.delete(`/post/${id}`);
+    await apiService.delete(`/post/delete/${id}`);
     return id;
   },
 );

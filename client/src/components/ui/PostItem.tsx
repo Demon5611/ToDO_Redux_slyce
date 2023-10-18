@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { Box, Button, Card, CardContent, Checkbox, Typography } from '@mui/material';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import locale from 'date-fns/locale/ru';
