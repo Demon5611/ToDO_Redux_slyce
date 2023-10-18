@@ -1,4 +1,4 @@
-import { Box, Button, TextField } from '@mui/material';
+import { Box, Button, Paper, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { upDateHandlerThunk } from '../../redux/slices/user/UserThunks';
@@ -26,46 +26,76 @@ export default function AdminPage(): JSX.Element {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <TextField
-          label="Name"
-          name="username"
-          value={formValues.username}
-          onChange={handleInputChange}
-          variant="outlined"
-          sx={{ m: 1, width: '25ch' }}
-        />
+    <Box
+      sx={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        '& > :not(style)': {
+          m: 1,
+          width: 256,
+          height: 128,
+        },
+      }}
+    >
 
-        <TextField
-          label="Email"
-          name="email"
-          value={formValues.email}
-          onChange={handleInputChange}
-          variant="outlined"
-          sx={{ m: 1, width: '25ch' }}
-        />
+      <Paper elevation={9}>
+          <Typography
+           sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+            height: '100%',
+            width: '70%',
+            margin: '0 15%',
+          }}>
+            Можете изменить регистрационные данные в этой форме
+          </Typography>
+      </Paper>
+      
 
-        <TextField
-          label="Password"
-          name="password"
-          value={formValues.password}
-          onChange={handleInputChange}
-          variant="outlined"
-          type="password"
-          sx={{ m: 1, width: '25ch' }}
-        />
+    
+      <form onSubmit={handleSubmit}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <TextField
+            label="Name"
+            name="username"
+            value={formValues.username}
+            onChange={handleInputChange}
+            variant="outlined"
+            sx={{ m: 1, width: '25ch' }}
+          />
 
-        <Button variant="contained" type="submit" sx={{ m: 1 }}>
-          Save
-        </Button>
-      </Box>
-    </form>
+          <TextField
+            label="Email"
+            name="email"
+            value={formValues.email}
+            onChange={handleInputChange}
+            variant="outlined"
+            sx={{ m: 1, width: '25ch' }}
+          />
+
+          <TextField
+            label="Password"
+            name="password"
+            value={formValues.password}
+            onChange={handleInputChange}
+            variant="outlined"
+            type="password"
+            sx={{ m: 1, width: '25ch' }}
+          />
+
+          <Button variant="contained" type="submit" sx={{ m: 1 }}>
+            Save
+          </Button>
+        </Box>
+      </form>
+    </Box>
   );
 }
