@@ -27,41 +27,44 @@ function App(): JSX.Element {
 
   const user = useAppSelector((store) => store.user);
 
+  const appStyles = {
+    width: '50%', // Можете использовать '50%' для 50% ширины экрана
+    maxWidth: '750px', // Максимальная ширина 750px
+    margin: '0 auto', // Для центрирования
+  };
   return (
     <ThemeProvider theme={theme}>
       <Loader isLoading={user.status === 'loading'}>
-        <>
+        <Container style={appStyles}>
           <NavBar />
           <Box mt={5}>
-            <Container>
-              <Routes>
-                <Route path="/" element={<MainPage />} />
+            <Routes>
+              <Route path="/" element={<MainPage />} />
 
-                <Route element={<PrivateRoute isAllowed={user.status === 'logged'} />}>
-                  <Route path="/posts" element={<PostsPage />} />
-                  <Route path="/another" element={<AnotherPage />} />
-                </Route>
+              <Route element={<PrivateRoute isAllowed={user.status === 'logged'} />}>
+                <Route path="/posts" element={<PostsPage />} />
+                <Route path="/another" element={<AnotherPage />} />
+              </Route>
 
-                <Route
-                  path="/admin"
-                  element={
-                    <PrivateRoute isAllowed={user.status === 'logged' || user.username === 'admin'}>
-                      <AdminPage />
-                    </PrivateRoute>
-                  }
-                />
-                <Route
-                  path="/:auth"
-                  element={
-                    <PrivateRoute isAllowed={user.status === 'guest'}>
-                      <AuthPage />
-                    </PrivateRoute>
-                  }
-                />
-              </Routes>
-            </Container>
+              <Route
+                path="/admin"
+                element={
+                  <PrivateRoute isAllowed={user.status === 'logged' || user.username === 'admin'}>
+                    <AdminPage />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/:auth"
+                element={
+                  <PrivateRoute isAllowed={user.status === 'guest'}>
+                    <AuthPage />
+                  </PrivateRoute>
+                }
+              />
+            </Routes>
           </Box>
-        </>
+        </Container>
       </Loader>
     </ThemeProvider>
   );

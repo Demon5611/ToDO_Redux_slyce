@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import React from 'react';
-import { Hearts } from 'react-loader-spinner';
+import { Rings } from 'react-loader-spinner';
 
 type LoaderProps = {
   children: React.ReactElement;
@@ -11,14 +11,15 @@ export default function Loader({ children, isLoading }: LoaderProps): JSX.Elemen
   if (isLoading)
     return (
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Hearts
-          height="200"
-          width="200"
-          color="#7F00FF"
-          ariaLabel="hearts-loading"
+        <Rings
+          height="100"
+          width="100"
+          color="#4fa94d"
+          radius="16"
           wrapperStyle={{}}
           wrapperClass=""
           visible
+          ariaLabel="rings-loading"
         />
       </Box>
     );
