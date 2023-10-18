@@ -26,76 +26,72 @@ export default function AdminPage(): JSX.Element {
   };
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        '& > :not(style)': {
-          m: 1,
-          width: 256,
-          height: 128,
-        },
-      }}
-    >
-
-      <Paper elevation={9}>
-          <Typography
-           sx={{
+<Box
+sx={{
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  // height: `calc(100vh - 15px)`, // Нижний край навбара находится на высоте 15px
+  mt: -30, // Поднятие всех карточек на 30px вверх
+  height: '100vh',
+  // mt: 30, // Отступ снизу верхней карточки
+}}
+> 
+      <Paper elevation={9} sx={{ width: '50%', mb: 2 }}>
+        <Typography
+          sx={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-            height: '100%',
-            width: '70%',
+            height: '50%',
             margin: '0 15%',
-          }}>
-            Можете изменить регистрационные данные в этой форме
-          </Typography>
-      </Paper>
-      
-
-    
-      <form onSubmit={handleSubmit}>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
+            width: '80%', mt: 2, ml: 6, mb: 2, }}
         >
-          <TextField
-            label="Name"
-            name="username"
-            value={formValues.username}
-            onChange={handleInputChange}
-            variant="outlined"
-            sx={{ m: 1, width: '25ch' }}
-          />
+          Можете изменить регистрационные данные в этой форме
+        </Typography>
+      </Paper>
 
-          <TextField
-            label="Email"
-            name="email"
-            value={formValues.email}
-            onChange={handleInputChange}
-            variant="outlined"
-            sx={{ m: 1, width: '25ch' }}
-          />
+      <form onSubmit={handleSubmit} sx={{ width: '70%', mt: 4 }}>
+        <TextField
+          label="Name"
+          name="username"
+          value={formValues.username}
+          onChange={handleInputChange}
+          variant="outlined"
+          sx={{ mb: 2, width: '100%' }}
+        />
 
-          <TextField
-            label="Password"
-            name="password"
-            value={formValues.password}
-            onChange={handleInputChange}
-            variant="outlined"
-            type="password"
-            sx={{ m: 1, width: '25ch' }}
-          />
+        <TextField
+          label="Email"
+          name="email"
+          value={formValues.email}
+          onChange={handleInputChange}
+          variant="outlined"
+          sx={{ mb: 2, width: '100%' }}
+        />
 
-          <Button variant="contained" type="submit" sx={{ m: 1 }}>
-            Save
-          </Button>
-        </Box>
+        <TextField
+          label="Password"
+          name="password"
+          value={formValues.password}
+          onChange={handleInputChange}
+          variant="outlined"
+          type="password"
+          sx={{ mb: 2, width: '100%' }}
+        />
+
+        <Button variant="contained" type="submit">
+          Save
+        </Button>
       </form>
     </Box>
   );
 }
+
+
+
+
+
+// ==================
