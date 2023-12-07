@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { useAppDispatch } from '../../redux/hooks';
 import { addPostThunk } from '../../redux/slices/posts/PostsThunks';
 
-
 export default function PostsForm(): JSX.Element {
   const dispatch = useAppDispatch();
   const [inputs, setInputs] = useState({ name: '' });
@@ -29,7 +28,7 @@ export default function PostsForm(): JSX.Element {
       <TextField
         name="name"
         variant="outlined"
-        placeholder="name"
+        placeholder="type your todo here.."
         value={inputs.name}
         onChange={changeHandler}
         // onKeyPress={handleKeyPress} // Обработчик клавиши "Enter"
