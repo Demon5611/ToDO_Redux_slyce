@@ -92,5 +92,10 @@ router.patch('/update/:id', async (req, res) =>
   }
 });
 
+router.get('/chat', async (req, res) => {
+  const messages = await Message.findAll({ include: User });
+  res.render('Layout', { messages });
+});
+
 
 module.exports = router;
