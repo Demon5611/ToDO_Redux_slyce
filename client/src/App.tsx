@@ -16,7 +16,6 @@ import type { UserType } from './types/userTypes';
 
 type AppTypeProps = {
   messages: StatusChatType[];
- 
 };
 
 function App({ messages }: AppTypeProps): JSX.Element {
@@ -49,10 +48,13 @@ function App({ messages }: AppTypeProps): JSX.Element {
               <Route path="/" element={<MainPage />} />
 
               <Route element={<PrivateRoute isAllowed={user.status === 'logged'} />}>
-                <Route path="/posts" element={<PostsPage />} />                
-                <Route path="/chat" element={<ChatPage messages={messages} user={user as UserType} />} />
+                <Route path="/posts" element={<PostsPage />} />
+                <Route
+                  path="/chat"
+                  element={<ChatPage messages={messages} user={user as UserType} />}
+                />
+                
               </Route>
-
 
               <Route
                 path="/admin"

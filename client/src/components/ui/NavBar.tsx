@@ -12,9 +12,7 @@ const linkStyle = { color: 'white', mr: 2, fontFamily: 'Raleway, Arial' };
 
 export default function NavBar(): JSX.Element {
   const user = useAppSelector((store) => store.user);
-
   const [open, setOpen] = React.useState(false);
-
   const handleClick = (): void => {
     setOpen((prev) => !prev);
   };

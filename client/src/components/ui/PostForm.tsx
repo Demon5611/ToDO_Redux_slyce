@@ -8,7 +8,11 @@ export default function PostsForm(): JSX.Element {
   const [inputs, setInputs] = useState<{ name: string }>({ name: '' });
 
   const handleSend = () => {
-    void dispatch(addPostThunk(inputs.name));
+    if (inputs.name.trim() === '') {
+      alert('Вы ввели пустое значение в форму!');
+      return;
+    }
+    void dispatch(addPostThunk({ name: inputs.name }));
     setInputs({ name: '' });
   };
 

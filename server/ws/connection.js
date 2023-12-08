@@ -12,7 +12,7 @@ const map = new Map();
 
 const connectionCb = (socket, request) => {
   const Uid = request.session.user.id;
-  console.log('Uid====>', Uid)
+  console.log('socket====>', socket)
   map.set(Uid, { ws: socket, user: request.session.user });
 
   function sendUsers(activeConnections) {

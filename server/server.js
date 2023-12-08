@@ -34,5 +34,5 @@ const wsServer = new WebSocketServer({ server });
 //     wsServer.emit("connection", ws, request);
 //   });
 // });
-
+// upgrade дает ошибку сразу после старта
 server.listen(PORT, () => console.log(`App has started on port ${PORT}`));
