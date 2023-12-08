@@ -2,18 +2,18 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import UsersList from './chat/ui/UsersList';
 import ChatComponent from './chat/ui/ChatComponent';
-import type { StatusChatType } from '../../types/messageTypes';
+import type { MessageType } from '../../types/messageTypes';
 import type { UserType } from '../../types/userTypes';
 
 type ChatTypeProps = {
-  messages: StatusChatType[];
+  messages: MessageType[];
   user: UserType;
 };
 export default function ChatPage({
   messages: initMessages,
   user: logged,
 }: ChatTypeProps): JSX.Element {
-  const [messages, setMessages] = useState<StatusChatType[]>(initMessages);
+  const [messages, setMessages] = useState<MessageType[]>(initMessages);
   const [users, setUsers] = useState<UserType[]>([]); // задали состояния для отображения юзеров
   const socketRef = useRef<WebSocket | null>(null); // Создаем ссылку на сокет скрола (обращаемся к последнему сообщению). useRef предоставляет доступ к DOM-элементу  - ОБЯЗАТЕЛЬНО ПРИ СОЗД ЧАТА на сокетах
   const [wsConect, setwsConect] = useState<boolean>(false); // для отображения 'CHAT' красной если не подключен и зеленый, если подключен к сокетам
@@ -23,11 +23,10 @@ export default function ChatPage({
   useEffect(() => {
     function createSocket() {
       const socket = new WebSocket('ws://localhost:3000'); // обьявили перем котор подкл к WS - идем на сервер и прописываем все там
-
       socket.onopen = () => {
         // при откр сокета уст-м соединение с сервером
         socketRef.current = socket; // положили соединение в обьект current.  изменяемые стейты сокета мы не можем хранить в useEffect (useEffect хранит в себе сост котор вызыв перерисовку компонента при изменении ), поэтому исп useRef
-        console.log('Socket connected');
+        console.log('Front: Socket connected');
         setwsConect(true); // отображаем 'CHAT'  зеленый, когда подключен
       };
 
@@ -36,7 +35,7 @@ export default function ChatPage({
         setTimeout(createSocket, 2000); // сделали переконект сокетов на случай. если свет моргнул и все отвалилось
       };
 
-      socket.onerror = (error) => console.error(error);
+      socket.onerror = (error) => console.error('Front: onerror',error);
 
       socket.onmessage = (event) => {
         const actionFromBackend = JSON.parse(event.data);

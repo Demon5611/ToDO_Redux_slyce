@@ -24,12 +24,11 @@ export default function NavBar(): JSX.Element {
       ? [
           { to: '/', name: 'Main' },
           { to: '/posts', name: 'Posts' },
-          { to: '/chat', name: 'chat' },
+          { to: '/chat', name: 'Chat' },
           { to: '/admin', name: 'Admin' },
         ]
       : [
           { to: '/', name: 'Main' },
-          { to: '/chat', name: 'chat' },
           { to: '/signup', name: 'Sign Up' },
           { to: '/login', name: 'Login' },
         ];

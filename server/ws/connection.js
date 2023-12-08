@@ -11,10 +11,9 @@ const {
 const map = new Map();
 
 const connectionCb = (socket, request) => {
-
-  const userId = request.session.user.id;
-
-  map.set(userId, { ws: socket, user: request.session.user });
+  const Uid = request.session.user.id;
+  console.log('Uid====>', Uid)
+  map.set(Uid, { ws: socket, user: request.session.user });
 
   function sendUsers(activeConnections) {
     activeConnections.forEach(({ ws }) => {
@@ -32,7 +31,7 @@ const connectionCb = (socket, request) => {
   sendUsers(map);
 
   socket.on("error", () => {
-    map.delete(userId);
+    map.delete(Uid);
     sendUsers(map);
   });
   // самый основной блок
@@ -44,31 +43,29 @@ const connectionCb = (socket, request) => {
       type // в зав-ти от типа делаем нужную операцию
     ) {
       case SEND_MESSAGE:
-        Message.create({ text: payload, Uid: userId }).then(
-          async (newMessage) => {
-            // записали в БД (поля ( text: , authorId: ), как в БД)
-            const newMessageWithAuthor = await Message.findOne({
-              // добавили автора сообщения для отправки на клиент
-              where: { id: newMessage.id }, // ищем сообщение по его id
-              include: User, // и добавляем автора
-            });
-            map.forEach(({ ws }) => {
-              // применили forEach что бы отправить ответ всем бзерам на клиент (что бы каждый у себя увидел ответ)
-              ws.send(
-                JSON.stringify({
-                  // отправили на клиент все целиком
-                  type: ADD_MESSAGE,
-                  payload: newMessageWithAuthor,
-                })
-              );
-            });
-          }
-        );
+        Message.create({ text: payload, Uid }).then(async (newMessage) => {
+          // записали в БД (поля ( text: , authorId: ), как в БД)
+          const newMessageWithAuthor = await Message.findOne({
+            // добавили автора сообщения для отправки на клиент
+            where: { id: newMessage.id }, // ищем сообщение по его id
+            include: User, // и добавляем автора
+          });
+          map.forEach(({ ws }) => {
+            // применили forEach что бы отправить ответ всем бзерам на клиент (что бы каждый у себя увидел ответ)
+            ws.send(
+              JSON.stringify({
+                // отправили на клиент все целиком
+                type: ADD_MESSAGE,
+                payload: newMessageWithAuthor,
+              })
+            );
+          });
+        });
         break;
       case STARTED_TYPING:
         const actionStartedTyping = {
           type: STARTED_TYPING,
-          payload: map.get(userId).user.name,
+          payload: map.get(Uid).user.name,
         };
         map.forEach(({ ws }) => {
           ws.send(JSON.stringify(actionStartedTyping));
@@ -85,7 +82,7 @@ const connectionCb = (socket, request) => {
       case DELETE_MESSAGE:
         Message.findOne({ where: { id: payload } }).then(
           async (targetMessage) => {
-            if (targetMessage.Uid !== userId) return;
+            if (targetMessage.Uid !== Uid) return;
             await Message.destroy({ where: { id: payload } });
             map.forEach(({ ws }) => {
               ws.send(
@@ -102,11 +99,11 @@ const connectionCb = (socket, request) => {
       default:
         break;
     }
-    console.log(`Received message ${message} from user ${userId}`);
+    console.log(`Received message ${message} from user ${Uid}`);
   });
 
   socket.on("close", () => {
-    map.delete(userId); // удалили юзера из списка подключенных юзеров
+    map.delete(Uid); // удалили юзера из списка подключенных юзеров
     sendUsers(map); // обновили список пользователей без юзера
   });
 };

@@ -8,7 +8,7 @@ const wsServer = new WebSocketServer({
 
 const upgradeCb = (request, socket, head) => {
   socket.on("error", (err) => {
-    console.log("Socket error:", err);
+    console.log("upgradeCb BACK:Socket error:", err);
   });
 
   console.log("Parsing session from request...");
@@ -25,7 +25,7 @@ const upgradeCb = (request, socket, head) => {
     });
 
     wsServer.handleUpgrade(request, socket, head, (ws) => {
-      wsServer.emit("connection", ws, request);
+      wsServer.emit("WsServer connection ==>", ws, request);
     });
   });
 };

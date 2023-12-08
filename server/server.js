@@ -2,7 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const http = require("http");
-const {WebSocketServer} = require("ws"); // Изменили путь
+const { WebSocketServer } = require("ws"); // Изменили путь
 
 const connectionCb = require("./ws/connection");
 const postsRouter = require("./routes/postsRouter");
@@ -29,10 +29,10 @@ app.use("/api/user", userRouter);
 const server = http.createServer(app); // Использовали http.createServer с express
 const wsServer = new WebSocketServer({ server });
 
-server.on("upgrade", (request, socket, head) => {
-  wsServer.handleUpgrade(request, socket, head, (ws) => {
-    wsServer.emit("connection", ws, request);
-  });
-});
+// server.on("upgrade", (request, socket, head) => {
+//   wsServer.handleUpgrade(request, socket, head, (ws) => {
+//     wsServer.emit("connection", ws, request);
+//   });
+// });
 
 server.listen(PORT, () => console.log(`App has started on port ${PORT}`));

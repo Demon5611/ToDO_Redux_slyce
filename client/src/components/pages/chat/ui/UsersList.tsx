@@ -4,7 +4,7 @@ import DotOnlineIcon from './icons_Chat/DotOnlineIcon';
 import type { UserType } from '../../../../types/userTypes';
 
 type UsersListTypeProps = {
-  user: UserType;
+  users: UserType[];
 };
 
 

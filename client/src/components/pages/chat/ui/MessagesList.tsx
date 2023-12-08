@@ -4,7 +4,7 @@ import ChatMessage from './ChatMessage';
 import type { MessageType } from '../../../../types/messageTypes';
 
 type MessagesListPropsType = {
-  deleteMessageHandler: (id: string) => void;
+  deleteMessageHandler: (id: number) => void;
   messages: MessageType[];
   logged: boolean;
 };
@@ -14,13 +14,13 @@ export default function MessagesList({
   messages,
   logged,
 }: MessagesListPropsType): JSX.Element {
-  return (
+    return (
     <div className="overflow-auto" style={{ height: '23rem' }}>
       <Stack>
-        {messages.map((message) => (
+        {messages  && messages.map((message) => (
           <ChatMessage
             deleteMessageHandler={() => deleteMessageHandler(message.Uid)}
-            message={message}
+            message={message} 
             key={message.Uid}
             logged={logged}
           />

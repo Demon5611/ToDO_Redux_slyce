@@ -4,7 +4,7 @@ import type { MessageType } from '../../../../types/messageTypes';
 import type { UserType } from '../../../../types/userTypes';
 
 type ChatMessagePropsType = {
-  deleteMessageHandler: (id: string) => void;
+  deleteMessageHandler: (id: number) => void;
   message: MessageType;
   logged: UserType;
 };

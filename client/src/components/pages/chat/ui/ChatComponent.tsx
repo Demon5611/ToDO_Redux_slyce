@@ -27,7 +27,7 @@ export default function ChatComponent({
         messages={messages}
         logged={logged}
       />
-      <div className="fs-6 fw-light">{writes ? 'Alex печатает...' : `\xa0`}</div>
+      <div className="fs-6 fw-light">{writes ? ' печатает...' : `\xa0`}</div>
       <MessageForm submitMessageHandler={submitMessageHandler} typingHandler={typingHandler} />
     </Stack>
   );

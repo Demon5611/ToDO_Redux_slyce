@@ -11,8 +11,15 @@ import Loader from './hocs/Loader';
 import PrivateRoute from './hocs/PrivateRoute';
 import { useAppDispatch, useAppSelector } from './redux/hooks';
 import { checkUserThunk } from './redux/slices/user/UserThunks';
+import type { StatusChatType } from './types/messageTypes';
+import type { UserType } from './types/userTypes';
 
-function App(): JSX.Element {
+type AppTypeProps = {
+  messages: StatusChatType[];
+ 
+};
+
+function App({ messages }: AppTypeProps): JSX.Element {
   const theme = createTheme({
     palette: {
       primary: { main: '#6a329f' },
@@ -42,9 +49,10 @@ function App(): JSX.Element {
               <Route path="/" element={<MainPage />} />
 
               <Route element={<PrivateRoute isAllowed={user.status === 'logged'} />}>
-                <Route path="/posts" element={<PostsPage />} />
-                <Route path="/chat" element={<ChatPage/>} />
+                <Route path="/posts" element={<PostsPage />} />                
+                <Route path="/chat" element={<ChatPage messages={messages} user={user as UserType} />} />
               </Route>
+
 
               <Route
                 path="/admin"
@@ -54,6 +62,7 @@ function App(): JSX.Element {
                   </PrivateRoute>
                 }
               />
+
               <Route
                 path="/:auth"
                 element={
