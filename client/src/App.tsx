@@ -2,7 +2,7 @@ import { Box, Container, ThemeProvider, createTheme } from '@mui/material';
 import React, { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import AdminPage from './components/pages/AdminPage';
-import AnotherPage from './components/pages/AnotherPage';
+import ChatPage from './components/pages/ChatPage';
 import AuthPage from './components/pages/AuthPage';
 import MainPage from './components/pages/MainPage';
 import PostsPage from './components/pages/PostPages';
@@ -43,7 +43,7 @@ function App(): JSX.Element {
 
               <Route element={<PrivateRoute isAllowed={user.status === 'logged'} />}>
                 <Route path="/posts" element={<PostsPage />} />
-                <Route path="/another" element={<AnotherPage />} />
+                <Route path="/chat" element={<ChatPage/>} />
               </Route>
 
               <Route

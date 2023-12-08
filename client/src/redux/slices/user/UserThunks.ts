@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import apiService from '../../../components/services/config';
+import apiService from '../../../services/config';
 import type { UserLoginType, UserSignUpType, UserType } from '../../../types/userTypes';
 
 export const checkUserThunk = createAsyncThunk<UserType>('user/checkUserThunk', async () => {

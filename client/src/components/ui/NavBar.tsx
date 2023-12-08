@@ -15,7 +15,7 @@ export default function NavBar(): JSX.Element {
 
   const [open, setOpen] = React.useState(false);
 
-  const handleClick = () => {
+  const handleClick = (): void => {
     setOpen((prev) => !prev);
   };
 
@@ -24,12 +24,12 @@ export default function NavBar(): JSX.Element {
       ? [
           { to: '/', name: 'Main' },
           { to: '/posts', name: 'Posts' },
+          { to: '/chat', name: 'chat' },
           { to: '/admin', name: 'Admin' },
-          { to: '/another', name: 'Another' },
         ]
       : [
           { to: '/', name: 'Main' },
-          { to: '/another', name: 'Another' },
+          { to: '/chat', name: 'chat' },
           { to: '/signup', name: 'Sign Up' },
           { to: '/login', name: 'Login' },
         ];

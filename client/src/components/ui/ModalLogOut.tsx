@@ -11,7 +11,6 @@ import { logoutHandlerThunk } from '../../redux/slices/user/UserThunks';
 type ModalLog = {
   open: boolean;
   handleClick: () => void;
-
 };
 export default function ModalLogOut({ open, handleClick }: ModalLog): JSX.Element {
   const dispatch = useAppDispatch();

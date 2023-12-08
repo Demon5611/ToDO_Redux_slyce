@@ -1,7 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import apiService from '../../../components/services/config';
-
+import apiService from '../../../services/config';
 import type { PostFormType, PostType } from '../../../types/postTypes';
+
+
+
 
 export const getPostsThunk = createAsyncThunk<PostType[]>('posts/getPosts', async () => {
   const { data } = await apiService<PostType[]>('/post/all');
@@ -30,9 +32,10 @@ export const updateCheckBoxThunk = createAsyncThunk<
   { formData: PostFormType; id: PostType['id'] }
 >('post/updateCheckBox', (formData) => {
   console.log('formData', formData);
-  return apiService.patch<PostType>(`/post/newstatus/${formData.id}`, formData).then((res) => res.data);
+  return apiService
+    .patch<PostType>(`/post/newstatus/${formData.id}`, formData)
+    .then((res) => res.data);
 });
-
 
 export const deletePostThunk = createAsyncThunk<PostType['id'], { id: PostType['id'] }>(
   'posts/deletePost',
