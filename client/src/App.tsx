@@ -34,9 +34,9 @@ function App({ messages }: AppTypeProps): JSX.Element {
   const user = useAppSelector((store) => store.user);
 
   const appStyles = {
-    width: '50%', // Можете использовать '50%' для 50% ширины экрана
-    maxWidth: '750px', // Максимальная ширина 750px
-    margin: '0 auto', // Для центрирования
+    width: '50%', 
+    maxWidth: '750px', 
+    margin: '0 auto', 
   };
   return (
     <ThemeProvider theme={theme}>
