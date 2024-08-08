@@ -2,8 +2,8 @@ const WebSocketServer = require("ws");
 const sessionParser = require("../middlewares/sessionParser");
 
 const wsServer = new WebSocketServer({
-  noServer: true,
-  clientTracking: false,
+  noServer: true, // указывает, что WebSocket-сервер не должен автоматически создавать собственный HTTP сервер, а будет использовать существующий.
+  clientTracking: false // отключает отслеживание клиентов, что может быть полезно для снижения нагрузки.
 });
 
 const upgradeCb = (request, socket, head) => {
@@ -31,3 +31,7 @@ const upgradeCb = (request, socket, head) => {
 };
 
 module.exports = { upgradeCb, wsServer };
+
+// код настраивает WebSocket-сервер, который интегрируется с middleware для проверки сессий. Он обрабатывает HTTP-запросы на обновление до WebSocket-соединений, 
+// проверяет наличие активной сессии пользователя, и если проверка проходит успешно, управляет WebSocket-соединением. 
+// В случае неуспешной проверки сессии соединение закрывается с кодом ошибки 401.
