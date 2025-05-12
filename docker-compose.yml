@@ -1,0 +1,17 @@
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: pg-todo
+    restart: always
+    ports:
+      - "15432:5432" 
+    environment:
+      POSTGRES_USER: OWN_NAME
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: ToDo4
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+volumes:
+  pg_data:
