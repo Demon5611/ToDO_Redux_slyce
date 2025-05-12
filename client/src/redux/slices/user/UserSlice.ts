@@ -9,7 +9,17 @@ import {
   upDateHandlerThunk,
 } from './UserThunks';
 
-type UserState = UserLoadingType;
+export type UserBase = {
+  id: number;
+  username: string;
+  email: string;
+};
+
+export type UserState =
+  | { status: 'loading' }
+  | { status: 'guest' }
+  | (UserBase & { status: 'logged' });
+
 const initialState: UserState = { status: 'loading' };
 
 export const userSlice = createSlice({

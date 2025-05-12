@@ -1,3 +1,5 @@
+import type { UserType } from "./userTypes";
+
 export type MessageType = {
   User: any;
   id: number;
@@ -5,6 +7,12 @@ export type MessageType = {
   text: string;
   username: string;
 };
+type WSMessage =
+  | { type: 'SET_USERS'; payload: UserType[] }
+  | { type: 'ADD_MESSAGE'; payload: MessageType }
+  | { type: 'SET_TYPER'; payload: string }
+  | { type: 'HIDE_MESSAGE'; payload: number }
+  | { type: 'CLEAR_TYPER' };
 
 export type StatusChatType =
   | 'SEND_MESSAGE'

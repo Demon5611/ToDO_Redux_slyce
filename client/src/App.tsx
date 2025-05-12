@@ -11,11 +11,11 @@ import Loader from './hocs/Loader';
 import PrivateRoute from './hocs/PrivateRoute';
 import { useAppDispatch, useAppSelector } from './redux/hooks';
 import { checkUserThunk } from './redux/slices/user/UserThunks';
-import type { StatusChatType } from './types/messageTypes';
-import type { UserType } from './types/userTypes';
+import type { MessageType } from './types/messageTypes';
+import isLogged from './types/userGuards';
 
 type AppTypeProps = {
-  messages: StatusChatType[];
+  messages: MessageType[];
 };
 
 function App({ messages }: AppTypeProps): JSX.Element {
@@ -26,18 +26,18 @@ function App({ messages }: AppTypeProps): JSX.Element {
   });
 
   const dispatch = useAppDispatch();
+  const user = useAppSelector((store) => store.user);
 
   useEffect(() => {
     void dispatch(checkUserThunk());
-  }, []);
-
-  const user = useAppSelector((store) => store.user);
+  }, [dispatch]);
 
   const appStyles = {
-    width: '50%', 
-    maxWidth: '750px', 
-    margin: '0 auto', 
+    width: '50%',
+    maxWidth: '750px',
+    margin: '0 auto',
   };
+
   return (
     <ThemeProvider theme={theme}>
       <Loader isLoading={user.status === 'loading'}>
@@ -51,15 +51,14 @@ function App({ messages }: AppTypeProps): JSX.Element {
                 <Route path="/posts" element={<PostsPage />} />
                 <Route
                   path="/chat"
-                  element={<ChatPage messages={messages} user={user as UserType} />}
+                  element={isLogged(user) ? <ChatPage messages={messages} user={user} /> : null}
                 />
-                
               </Route>
 
               <Route
                 path="/admin"
                 element={
-                  <PrivateRoute isAllowed={user.status === 'logged' || user.username === 'admin'}>
+                  <PrivateRoute isAllowed={user.status === 'logged' && user.username === 'admin'}>
                     <AdminPage />
                   </PrivateRoute>
                 }

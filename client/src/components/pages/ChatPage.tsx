@@ -9,19 +9,27 @@ type ChatTypeProps = {
   messages: MessageType[];
   user: UserType;
 };
+
+type WSMessage =
+  | { type: 'SET_USERS'; payload: UserType[] }
+  | { type: 'ADD_MESSAGE'; payload: MessageType }
+  | { type: 'SET_TYPER'; payload: string }
+  | { type: 'HIDE_MESSAGE'; payload: number }
+  | { type: 'CLEAR_TYPER' };
+
 export default function ChatPage({
   messages: initMessages,
   user: logged,
 }: ChatTypeProps): JSX.Element {
   const [messages, setMessages] = useState<MessageType[]>(initMessages);
-  const [users, setUsers] = useState<UserType[]>([]); // задали состояния для отображения юзеров
+  const [users, setUsers] = useState<UserType[]>([]);
   const socketRef = useRef<WebSocket | null>(null); // Создаем ссылку на сокет скрола (обращаемся к последнему сообщению). useRef предоставляет доступ к DOM-элементу  - ОБЯЗАТЕЛЬНО ПРИ СОЗД ЧАТА на сокетах
   const [wsConect, setwsConect] = useState<boolean>(false); // для отображения 'CHAT' красной если не подключен и зеленый, если подключен к сокетам
-  const [writer, setwriter] = useState<string | null>(null); // делаем индикацию кто печатает nuul | User['name']
+  const [writer, setWriter] = useState<string | null>(null); // делаем индикацию кто печатает nuul | User['name']
 
   // поместили всю логику в useEffect и запускаем его только один раз и только при первом рендере компонента, когда он монтируется. Запускается сервер, запускается фронт и открывается соединение
   useEffect(() => {
-    function createSocket() {
+    function createSocket(): any {
       const socket = new WebSocket('ws://localhost:3000'); // обьявили перем котор подкл к WS - идем на сервер и прописываем все там
       socket.onopen = () => {
         // при откр сокета уст-м соединение с сервером
@@ -35,46 +43,51 @@ export default function ChatPage({
         setTimeout(createSocket, 2000); // сделали переконект сокетов на случай. если свет моргнул и все отвалилось
       };
 
-      socket.onerror = (error) => console.error('Front: onerror',error);
+      socket.onerror = (error) => console.error('Front: onerror', error);
 
-      socket.onmessage = (event) => {
-        const actionFromBackend = JSON.parse(event.data);
-        const { type, payload } = actionFromBackend; // принимаем с бэка из reducers из connection.js
-        switch (type) {
-          case 'SET_USERS': // на бэк это тоже 'SET_USERS'
-            setUsers(payload);
-            break;
-          case 'ADD_MESSAGE': // на бэк это  'SEND_MESSAGE'
-            setMessages((prev) => [...prev, payload]);
-            break;
-          case 'SET_TYPER':
-            setwriter(payload);
-            break;
-
-          case 'HIDE_MESSAGE': // на бэк это  'DELETE_MESSAGE'
-            setMessages((prev) => prev.filter((post) => post.id !== payload));
-            break;
-          default:
-            break;
+      socket.onmessage = (event: MessageEvent<string>) => {
+        try {
+          const action: WSMessage = JSON.parse(event.data) as WSMessage;
+          switch (action.type) {
+            case 'SET_USERS':
+              setUsers(action.payload);
+              break;
+            case 'ADD_MESSAGE':
+              setMessages((prev) => [...prev, action.payload]);
+              break;
+            case 'SET_TYPER':
+              setWriter(action.payload);
+              break;
+            case 'HIDE_MESSAGE':
+              setMessages((prev) => prev.filter((msg) => msg.id !== action.payload));
+              break;
+            case 'CLEAR_TYPER':
+              setWriter(null);
+              break;
+            default:
+              console.warn('Unknown WS message:', action);
+          }
+        } catch (err) {
+          console.error('Invalid WS message:', err);
         }
       };
     }
     createSocket();
   }, []);
 
-  const submitMessageHandler = (inputText: string) => {
-    if (!socketRef.current) return;
-    const action = { type: 'SEND_MESSAGE', payload: inputText };
-    socketRef.current.send(JSON.stringify(action));
-  };
-
-  const deleteMessageHandler = (id: string) => {
+  const deleteMessageHandler = (id: number): void => {
     if (!socketRef.current) return;
     const action = { type: 'DELETE_MESSAGE', payload: id };
     socketRef.current.send(JSON.stringify(action));
   };
 
-  const typingHandler = (isTyping: boolean) => {
+  const submitMessageHandler = (inputText: string): void => {
+    if (!socketRef.current) return;
+    const action = { type: 'SEND_MESSAGE', payload: inputText };
+    socketRef.current.send(JSON.stringify(action));
+  };
+
+  const typingHandler = (isTyping: boolean): void => {
     if (isTyping && socketRef.current)
       socketRef.current.send(JSON.stringify({ type: 'STARTED_TYPING' }));
     else if (!isTyping && socketRef.current)

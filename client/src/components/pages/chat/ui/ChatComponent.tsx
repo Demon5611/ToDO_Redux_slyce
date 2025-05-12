@@ -2,14 +2,14 @@ import React from 'react';
 import { Stack } from 'react-bootstrap';
 import MessageForm from './MessageForm';
 import MessagesList from './MessagesList';
-import type { StatusChatType } from '../../../../types/messageTypes';
+import type { MessageType } from '../../../../types/messageTypes';
 import type { UserType } from '../../../../types/userTypes';
 
 type ChatComponentPropsType = {
-  deleteMessageHandler: () => void;
-  submitMessageHandler: () => void;
-  typingHandler: () => void;
-  messages: StatusChatType[];
+  deleteMessageHandler: (id: number) => void;
+  submitMessageHandler: (inputText: string) => void;
+  typingHandler: (isTyping: boolean) => void;
+  messages: MessageType[];
   logged: UserType;
 };
 export default function ChatComponent({

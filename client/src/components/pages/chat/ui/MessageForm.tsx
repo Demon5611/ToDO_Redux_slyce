@@ -3,7 +3,7 @@ import { Button, Form, InputGroup } from 'react-bootstrap';
 import SendIcon from './icons_Chat/SendIcon';
 
 type MessageFormPropsType = {
-  submitMessageHandler: (message: string) => void;
+  submitMessageHandler: (text: string) => void;
   typingHandler: (isTyping: boolean) => void;
 };
 
@@ -12,24 +12,23 @@ export default function MessageForm({
   typingHandler,
 }: MessageFormPropsType): JSX.Element {
   const [input, setInput] = useState<string>('');
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => setInput(e.target.value);
 
-  // создаем useEffect который будет следить за инпутом, что бы подсветить индикацию кто печатает
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setInput(e.target.value);
+  };
 
   useEffect(() => {
-    if (input.length) typingHandler(true);
-    else typingHandler(false);
-  }, [input]);
-  // дописать код на бэк в connection - принять/  допишем STARTED_TYPING
+    typingHandler(input.length > 0);
+  }, [input, typingHandler]);
+
+  const handleSubmit = (e: React.FormEvent): void => {
+    e.preventDefault();
+    submitMessageHandler(input);
+    setInput('');
+  };
 
   return (
-    <Form
-      onSubmit={(e: FormEvent) => {
-        e.preventDefault();
-        submitMessageHandler(input);
-        setInput('');
-      }}
-    >
+    <Form onSubmit={handleSubmit}>
       <InputGroup className="mb-3">
         <Form.Control
           onChange={handleChange}
