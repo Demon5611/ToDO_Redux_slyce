@@ -4,7 +4,6 @@ import type { ChangeEvent, FormEvent } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { upDateHandlerThunk } from '../../redux/slices/user/UserThunks';
 
-
 type FormValues = {
   username: string;
   email: string;
@@ -43,7 +42,7 @@ export default function AdminPage(): JSX.Element {
 
   const handleSubmit = async (event: FormEvent): Promise<void> => {
     event.preventDefault();
-    await dispatch(upDateHandlerThunk({ ...formValues, id: user.id }));
+    const res = await dispatch(upDateHandlerThunk({ ...formValues, id: user.id }));
   };
 
   return (
@@ -61,7 +60,7 @@ export default function AdminPage(): JSX.Element {
         </Typography>
       </Paper>
 
-      <FormControl onSubmit={(e) => void handleSubmit(e)} style={{ width: '50%' }}>
+      <form onSubmit={(e) => void handleSubmit(e)} style={{ width: '50%' }}>
         <TextField
           label="Name"
           name="username"
@@ -90,7 +89,7 @@ export default function AdminPage(): JSX.Element {
         <Button variant="contained" type="submit">
           Save
         </Button>
-      </FormControl>
+      </form>
     </Box>
   );
 }

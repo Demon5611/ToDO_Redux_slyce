@@ -65,29 +65,38 @@ router.get('/logout', (req, res) => {
 
 
 // обновление данных пользователя на админ странице
-router.patch('/update/:id', async (req, res) =>
-{
+router.patch('/update/:id', async (req, res) => {
   try {
     const { email, password, username } = req.body;
-  const hashPassword = await bcrypt.hash(password, 10);
-  const [user, created] = await User.update({
-    where: { email },
-    defaults: {
-      email, username, password: hashPassword,
-    },
-  });
-  const { id } = req.params;
-  await User.findOne(req.body, { where: { id } });
-  if (created)
-  {
-    req.session.user = { ...user.get(), hashPassword: undefined };
-    return res.sendStatus(200);
-  } else  {
-    return res.status(400).json({ message: 'Email already exists' });
-  } 
+    const id = req.params.id;
 
+    const hashPassword = await bcrypt.hash(password, 10);
+
+    await User.update(
+      {
+        email,
+        username,
+        password: hashPassword,
+      },
+      {
+        where: { id },
+      }
+    );
+
+    const updatedUser = await User.findOne({ where: { id } });
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'Пользователь не найден' });
+    }
+
+    const sessionUser = JSON.parse(JSON.stringify(updatedUser));
+    delete sessionUser.password;
+    req.session.user = sessionUser;
+
+    return res.json(sessionUser);
   } catch (error) {
-    res.status(500).json({ message: 'не верный id' });
+    console.error('Ошибка при обновлении пользователя:', error);
+    return res.status(500).json({ message: 'Ошибка сервера' });
   }
 });
 

@@ -48,13 +48,15 @@ export const upDateHandlerThunk = createAsyncThunk<UserType, UserType>(
     }
 
     try {
-      const { data } = await apiService.patch<UserType>(`/auth/update/${formValues.id}`, formValues);
-      console.log("formValues ==>", formValues)
+      const { data } = await apiService.patch<UserType>(
+        `/user/update/${formValues.id}`,
+        formValues,
+      );
+
       return { ...data, status: 'logged' };
     } catch (error) {
       console.error('Error updating data:', error);
       return rejectWithValue('Update failed');
     }
-  }
+  },
 );
-
