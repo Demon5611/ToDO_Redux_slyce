@@ -27,6 +27,7 @@ export const updatePostThunk = createAsyncThunk<PostType, { name: string; id: nu
 export const updateCheckBoxThunk = createAsyncThunk<PostType, { formData: PostFormType }>(
   'post/updateCheckBox',
   async ({ formData }) => {
+    if (formData.id === undefined) throw new Error('Missing post id');
     const res = await apiService.patch<PostType>(`/post/newstatus/${formData.id}`, formData);
     return res.data;
   },

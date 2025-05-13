@@ -10,16 +10,16 @@ export const postsSlice = createSlice({
   initialState,
   reducers: {}, // здесь можем типизировать addCase(reducers:{state, action: PayloadAction<string>){..}})
   extraReducers: (builder) => {
-    builder.addCase(getPostsThunk.fulfilled, (state, action) => action.payload);
-    builder.addCase(getPostsThunk.rejected, (state, action) => []);
+    builder.addCase(getPostsThunk.fulfilled, (_state, action) => action.payload);
+    builder.addCase(getPostsThunk.rejected, (_state, _action) => []);
 
     builder.addCase(addPostThunk.fulfilled, (state, action) => [action.payload, ...state]);
-    builder.addCase(addPostThunk.rejected, (state, action) => state);
+    builder.addCase(addPostThunk.rejected, (state, _action) => state);
 
     builder.addCase(deletePostThunk.fulfilled, (state, action) =>
       state.filter((el) => el.id !== action.payload),
     );
-    builder.addCase(deletePostThunk.rejected, (state, action) => state);
+    builder.addCase(deletePostThunk.rejected, (state, _action) => state);
 
     builder.addCase(updatePostThunk.fulfilled, (state, action) => {
       const index = state.findIndex((el) => el.id === action.payload.id);

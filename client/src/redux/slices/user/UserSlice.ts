@@ -26,34 +26,34 @@ export const userSlice = createSlice({
   initialState: initialState as UserState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(checkUserThunk.pending, (state) => ({ status: 'loading' }));
-    builder.addCase(checkUserThunk.fulfilled, (state, action) => ({
+    builder.addCase(checkUserThunk.pending, (_state) => ({ status: 'loading' }));
+    builder.addCase(checkUserThunk.fulfilled, (_state, action) => ({
       ...action.payload,
       status: 'logged',
     }));
-    builder.addCase(checkUserThunk.rejected, (state) => ({
+    builder.addCase(checkUserThunk.rejected, (_state) => ({
       status: 'guest',
     }));
-    builder.addCase(signUpHandlerThunk.fulfilled, (state, action) => ({
+    builder.addCase(signUpHandlerThunk.fulfilled, (_state, action) => ({
       ...action.payload,
       status: 'logged',
     }));
-    builder.addCase(signUpHandlerThunk.rejected, (state, action) => ({
+    builder.addCase(signUpHandlerThunk.rejected, (_state, _action) => ({
       status: 'guest',
     }));
-    builder.addCase(loginHandlerThunk.fulfilled, (state, action) => ({
+    builder.addCase(loginHandlerThunk.fulfilled, (_state, action) => ({
       ...action.payload,
       status: 'logged',
     }));
-    builder.addCase(loginHandlerThunk.rejected, (state, action) => ({
+    builder.addCase(loginHandlerThunk.rejected, (_state, _action) => ({
       status: 'guest',
     }));
-    builder.addCase(logoutHandlerThunk.fulfilled, (state) => ({ status: 'guest' }));
-    builder.addCase(upDateHandlerThunk.fulfilled, (state, action) => ({
+    builder.addCase(logoutHandlerThunk.fulfilled, (_state) => ({ status: 'guest' }));
+    builder.addCase(upDateHandlerThunk.fulfilled, (_state, action) => ({
       ...action.payload,
       status: 'logged',
     }));
-    builder.addCase(upDateHandlerThunk.rejected, (state) => ({ status: 'guest' }));
+    builder.addCase(upDateHandlerThunk.rejected, (_state) => ({ status: 'guest' }));
   },
 });
 
