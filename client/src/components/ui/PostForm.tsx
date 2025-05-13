@@ -7,7 +7,7 @@ export default function PostsForm(): JSX.Element {
   const dispatch = useAppDispatch();
   const [inputs, setInputs] = useState<{ name: string }>({ name: '' });
 
-  const handleSend = () => {
+  const handleSend = (): void => {
     if (inputs.name.trim() === '') {
       alert('Вы ввели пустое значение в форму!');
       return;
@@ -16,12 +16,12 @@ export default function PostsForm(): JSX.Element {
     setInputs({ name: '' });
   };
 
-  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
     setInputs((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     if (e.key === 'Enter') {
       // Проверяем, что клавиша "Enter" нажата
       handleSend();

@@ -22,8 +22,8 @@ const paperStyle = {
   borderRadius: '8px',
   width: '50%',
   boxShadow: '24px',
-  p: '2%', // Внутренние отступы 2% по всем сторонам
-  m: '10%', // Отступы по краям от рамки 10%
+  p: '2%',
+  m: '10%',
 };
 
 export default function ModalPost({ isOpen, post, onClose }: ModalPostEdit): JSX.Element {
@@ -56,10 +56,12 @@ export default function ModalPost({ isOpen, post, onClose }: ModalPostEdit): JSX
           <Button
             variant="outlined"
             size="large"
-            onClick={async () => {
-              void dispatch(updatePostThunk({ name: inputs.name, id: post.id }));
-              setInputs({ name: '' }); // очистили
-              onClose();
+            onClick={() => {
+              void (async () => {
+                await dispatch(updatePostThunk({ name: inputs.name, id: post.id }));
+                setInputs({ name: '' });
+                onClose();
+              })();
             }}
           >
             Save

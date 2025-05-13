@@ -5,12 +5,12 @@ import ModalPost from './ModalPostEdit';
 import PostItem from './PostItem';
 
 export default function PostsList(): JSX.Element {
-  const post = useAppSelector((store) => store.posts);
+  const posts = useAppSelector((store) => store.posts);
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState<PostType | null>(null);
 
-  const handleOpen =  (post: PostType): void => {
+  const handleOpen = (post: PostType): void => {
     setSelectedPost(post);
     setIsOpen(true);
   };
@@ -22,7 +22,7 @@ export default function PostsList(): JSX.Element {
 
   return (
     <div>
-      {post?.map((el) => (
+      {posts?.map((el) => (
         <div key={el.id}>
           <PostItem post={el} onEditClick={() => handleOpen(el)} />
         </div>

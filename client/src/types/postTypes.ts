@@ -1,11 +1,11 @@
 export type PostType = {
-  [x: string]: string | number | Date;
-    id: number;
-    name: string;
-  status?: boolean;
+  id: number;
+  name: string;
+  status: boolean;
+  createdAt: string | Date;
+};
 
-  };
-  
-export type PostFormType = Omit<PostType, 'status'>;  
+
+export type PostFormType = Pick<PostType, 'id' | 'status'>;
 
 // 'status' | 'id' пишем это если например мы не будем исп-ть статус или id
