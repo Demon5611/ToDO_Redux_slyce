@@ -17,6 +17,8 @@ export default function NavBar(): JSX.Element {
     setOpen((prev) => !prev);
   };
 
+  if (user.status === 'loading') return <div>Loading...</div>; // <--- важно
+
   const links =
     user.status === 'logged'
       ? [
@@ -27,7 +29,7 @@ export default function NavBar(): JSX.Element {
         ]
       : [
           { to: '/', name: 'Main' },
-          { to: '/signup', name: 'Sign Up' },
+          { to: '/signup', name: 'Registration' },
           { to: '/login', name: 'Login' },
         ];
 

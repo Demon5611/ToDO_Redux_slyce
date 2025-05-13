@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { createSlice } from '@reduxjs/toolkit';
-import type { UserLoadingType } from '../../../types/userTypes';
 import {
   checkUserThunk,
   loginHandlerThunk,

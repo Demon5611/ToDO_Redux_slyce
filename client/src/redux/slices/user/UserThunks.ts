@@ -19,7 +19,6 @@ export const loginHandlerThunk = createAsyncThunk<UserType, UserLoginType>(
   },
 );
 
-
 export const signUpHandlerThunk = createAsyncThunk<UserType, UserSignUpType>(
   'user/signUpHandlerThunk',
   async (formData, { rejectWithValue }) => {
@@ -32,7 +31,6 @@ export const signUpHandlerThunk = createAsyncThunk<UserType, UserSignUpType>(
   },
 );
 
-
 export const logoutHandlerThunk = createAsyncThunk('user/logoutHandlerThunk', async () => {
   try {
     await apiService('/user/logout');
@@ -44,15 +42,18 @@ export const logoutHandlerThunk = createAsyncThunk('user/logoutHandlerThunk', as
 
 export const upDateHandlerThunk = createAsyncThunk<UserType, UserType>(
   'user/upDateHandlerThunk',
-  async (formValues) => {
+  async (formValues, { rejectWithValue }) => {
     if (formValues.id === undefined || typeof formValues.id !== 'number') {
-      throw new Error('Invalid user ID');
+      return rejectWithValue('Invalid user ID');
     }
+
     try {
-      await apiService.patch(`/auth/update/${formValues.id}`, formValues);
-      console.log('Data updated successfully');
+      const { data } = await apiService.patch<UserType>(`/auth/update/${formValues.id}`, formValues);
+      return { ...data, status: 'logged' };
     } catch (error) {
-      console.error('Error updating data upDateHandlerThunk===>:', error);
+      console.error('Error updating data:', error);
+      return rejectWithValue('Update failed');
     }
-  },
+  }
 );
+
