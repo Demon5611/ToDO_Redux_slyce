@@ -9,27 +9,29 @@ export const checkUserThunk = createAsyncThunk<UserType>('user/checkUserThunk', 
 // проверка наличия куки пользователя. браузер запомнит и сразу авторизует
 export const loginHandlerThunk = createAsyncThunk<UserType, UserLoginType>(
   'user/loginHandlerThunk',
-  async (formData) => {
+  async (formData, { rejectWithValue }) => {
     try {
       const { data } = await apiService.post<UserType>('/user/login', formData);
       return { ...data, status: 'logged' };
     } catch (error) {
-      return { status: 'guest' };
+      return rejectWithValue('Login failed');
     }
   },
 );
 
+
 export const signUpHandlerThunk = createAsyncThunk<UserType, UserSignUpType>(
   'user/signUpHandlerThunk',
-  async (formData) => {
+  async (formData, { rejectWithValue }) => {
     try {
       const { data } = await apiService.post<UserType>('/user/signup', formData);
       return { ...data, status: 'logged' };
     } catch (error) {
-      return { status: 'guest' };
+      return rejectWithValue('Signup failed');
     }
   },
 );
+
 
 export const logoutHandlerThunk = createAsyncThunk('user/logoutHandlerThunk', async () => {
   try {
