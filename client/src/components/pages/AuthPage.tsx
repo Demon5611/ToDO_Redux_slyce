@@ -10,17 +10,23 @@ export default function AuthPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const submitHandler: React.FormEventHandler<HTMLFormElement> = async (e) => {
+  const submitHandler: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     const formData = Object.fromEntries(new FormData(e.currentTarget));
 
-    if (auth === 'signup') {
-      const res = await dispatch(signUpHandlerThunk(formData as UserSignUpType));
-      if (signUpHandlerThunk.fulfilled.match(res)) navigate('/');
-    } else {
-      const res = await dispatch(loginHandlerThunk(formData as UserLoginType));
-      if (loginHandlerThunk.fulfilled.match(res)) navigate('/');
-    }
+    const thunk =
+      auth === 'signup'
+        ? signUpHandlerThunk(formData as UserSignUpType)
+        : loginHandlerThunk(formData as UserLoginType);
+
+    void dispatch(thunk).then((res) => {
+      if (
+        (auth === 'signup' && signUpHandlerThunk.fulfilled.match(res)) ||
+        (auth !== 'signup' && loginHandlerThunk.fulfilled.match(res))
+      ) {
+        navigate('/');
+      }
+    });
   };
 
   return (
@@ -30,8 +36,6 @@ export default function AuthPage(): JSX.Element {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        mt: -10,
-        height: '100vh',
       }}
       component="form"
       onSubmit={submitHandler}
@@ -41,7 +45,7 @@ export default function AuthPage(): JSX.Element {
       {auth === 'signup' && <TextField variant="outlined" name="username" label="username" />}
       <TextField sx={{ m: '1% 1%' }} variant="outlined" name="email" label="email" type="email" />
       <TextField variant="outlined" name="password" label="password" type="password" />
-      <Button sx={{ m: '1% 1%' }} type="submit" variant="outlined" size="large">
+      <Button sx={{ m: '11% 1%' }} type="submit" variant="outlined" size="large">
         {auth === 'signup' ? 'Registration' : 'Login'}
       </Button>
     </Box>

@@ -55,14 +55,15 @@ function App({ messages }: AppTypeProps): JSX.Element {
                 />
               </Route>
 
-              <Route
+              {/* <Route
                 path="/admin"
                 element={
                   <PrivateRoute isAllowed={user.status === 'logged' && user.username === 'admin'}>
                     <AdminPage />
                   </PrivateRoute>
                 }
-              />
+              /> */}
+              <Route path="/admin" element={<AdminPage />} />
 
               <Route
                 path="/:auth"

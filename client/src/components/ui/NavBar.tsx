@@ -17,7 +17,7 @@ export default function NavBar(): JSX.Element {
     setOpen((prev) => !prev);
   };
 
-  if (user.status === 'loading') return <div>Loading...</div>; // <--- важно
+  if (user.status === 'loading') return <div>Loading...</div>;
 
   const links =
     user.status === 'logged'

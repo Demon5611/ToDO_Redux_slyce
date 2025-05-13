@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Box, Button, Paper, TextField, Typography } from '@mui/material';
+import { Box, Button, FormControl, Paper, TextField, Typography } from '@mui/material';
 import type { ChangeEvent, FormEvent } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { upDateHandlerThunk } from '../../redux/slices/user/UserThunks';
+
 
 type FormValues = {
   username: string;
@@ -51,7 +52,6 @@ export default function AdminPage(): JSX.Element {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        mt: -30,
         height: '100vh',
       }}
     >
@@ -61,7 +61,7 @@ export default function AdminPage(): JSX.Element {
         </Typography>
       </Paper>
 
-      <form onSubmit={(e) => void handleSubmit(e)} style={{ width: '50%' }}>
+      <FormControl onSubmit={(e) => void handleSubmit(e)} style={{ width: '50%' }}>
         <TextField
           label="Name"
           name="username"
@@ -90,7 +90,7 @@ export default function AdminPage(): JSX.Element {
         <Button variant="contained" type="submit">
           Save
         </Button>
-      </form>
+      </FormControl>
     </Box>
   );
 }

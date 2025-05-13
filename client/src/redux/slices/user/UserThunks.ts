@@ -49,6 +49,7 @@ export const upDateHandlerThunk = createAsyncThunk<UserType, UserType>(
 
     try {
       const { data } = await apiService.patch<UserType>(`/auth/update/${formValues.id}`, formValues);
+      console.log("formValues ==>", formValues)
       return { ...data, status: 'logged' };
     } catch (error) {
       console.error('Error updating data:', error);

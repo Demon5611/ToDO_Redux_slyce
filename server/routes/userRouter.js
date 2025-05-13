@@ -28,26 +28,25 @@ router.post('/signup', async (req, res) => {
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  if (email && password) {
-    try {
-      const user = await User.findOne({
-        where: { email },
-      });
-      if (!(await bcrypt.compare(password, user.password))) {
-        return res.sendStatus(401);
-      }
+  if (!email || !password) return res.sendStatus(400);
 
-      const sessionUser = JSON.parse(JSON.stringify(user));
-      delete sessionUser.password;
-      req.session.user = sessionUser;
-      return res.json(sessionUser);
-    } catch (e) {
-      console.log(e);
-      return res.sendStatus(500);
-    }
+  try {
+    const user = await User.findOne({ where: { email } });
+    if (!user) return res.sendStatus(401);
+
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    if (!isPasswordCorrect) return res.sendStatus(401);
+
+    const sessionUser = JSON.parse(JSON.stringify(user));
+    delete sessionUser.password;
+    req.session.user = sessionUser;
+    res.json(sessionUser);
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
   }
-  return res.sendStatus(500);
 });
+
 
 router.get('/check', (req, res) => {
   if (req.session.user)
