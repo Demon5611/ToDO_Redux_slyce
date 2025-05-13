@@ -23,7 +23,6 @@ export default function PostsForm(): JSX.Element {
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     if (e.key === 'Enter') {
-      // Проверяем, что клавиша "Enter" нажата
       handleSend();
     }
   };
@@ -36,7 +35,7 @@ export default function PostsForm(): JSX.Element {
         placeholder="type your todo here.."
         value={inputs.name}
         onChange={changeHandler}
-        onKeyPress={handleKeyPress} // Обработчик клавиши "Enter"
+        onKeyPress={handleKeyPress}
       />
       <br />
       <Button variant="outlined" size="large" onClick={handleSend}>

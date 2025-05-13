@@ -1,11 +1,10 @@
 export type PostType = {
   id: number;
-  name: string;
-  status: boolean;
+  name?: string;
+  status?: boolean;
   createdAt: string | Date;
 };
 
+export type PostFormType = Partial<Pick<PostType, 'id' | 'status'>> & Pick<PostType, 'name'>;
 
-export type PostFormType = Pick<PostType, 'id' | 'status'>;
-
-// 'status' | 'id' пишем это если например мы не будем исп-ть статус или id
+// 'если  нужно использовать PostFormType и для PATCH, и для POST, сделаем поля id и status необязательными

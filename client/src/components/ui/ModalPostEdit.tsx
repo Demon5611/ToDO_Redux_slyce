@@ -1,7 +1,7 @@
 import { Box, Button, Modal, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { useAppDispatch } from '../../redux/hooks';
-import { updatePostThunk } from '../../redux/slices/posts/PostsThunks';
+import { getPostsThunk, updatePostThunk } from '../../redux/slices/posts/PostsThunks';
 import type { PostType } from '../../types/postTypes';
 
 type ModalPostEdit = {
@@ -58,7 +58,8 @@ export default function ModalPost({ isOpen, post, onClose }: ModalPostEdit): JSX
             size="large"
             onClick={() => {
               void (async () => {
-                await dispatch(updatePostThunk({ name: inputs.name, id: post.id }));
+                await dispatch(updatePostThunk({ name: inputs.name ?? '', id: post.id }));
+                await dispatch(getPostsThunk());
                 setInputs({ name: '' });
                 onClose();
               })();

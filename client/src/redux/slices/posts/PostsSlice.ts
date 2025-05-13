@@ -22,8 +22,12 @@ export const postsSlice = createSlice({
     builder.addCase(deletePostThunk.rejected, (state, action) => state);
 
     builder.addCase(updatePostThunk.fulfilled, (state, action) => {
-      state = state.map((el) => (el.id === action.payload.id ? action.payload : el));
+      const index = state.findIndex((el) => el.id === action.payload.id);
+      if (index !== -1) {
+        state[index] = action.payload;
+      }
     });
+    
 
 
     // check-box
