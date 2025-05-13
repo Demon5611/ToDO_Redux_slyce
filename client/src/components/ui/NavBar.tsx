@@ -1,4 +1,4 @@
-import { Link } from '@mui/material';
+import { Link, Typography } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -36,24 +36,52 @@ export default function NavBar(): JSX.Element {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
-        <Toolbar sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-          <Box>
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          {/* Левый блок */}
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
             {links.map((link) => (
               <Link key={link.name} component={NavLink} to={link.to} sx={linkStyle}>
                 {link.name}
               </Link>
             ))}
-            <div>
-              {user.status === 'logged' ? user.username : 'guest, only authorized user can do'}
-            </div>
           </Box>
-          <Box>
-            {user.status === 'logged' && (
-              <Button variant="text" sx={linkStyle} onClick={handleClick}>
+
+          {/* Правый блок: имя + Logout */}
+          {user.status === 'logged' ? (
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Typography
+                sx={{
+                  color: 'white',
+                  fontFamily: 'Raleway, Arial',
+                  lineHeight: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  fontSize: '12px',
+                }}
+              >
+                {user.username}
+              </Typography>
+              <Button
+                variant="text"
+                onClick={handleClick}
+                sx={{
+                  minWidth: 'auto',
+                  padding: '4px 4px',
+                  lineHeight: 1,
+                  height: 'auto',
+                  fontSize: '12px',
+                  alignSelf: 'center',
+                  ...linkStyle,
+                }}
+              >
                 Logout
               </Button>
-            )}
-          </Box>
+            </Box>
+          ) : (
+            <Typography sx={{ color: 'white', fontFamily: 'Raleway, Arial' }}>
+              guest, only authorized user can do
+            </Typography>
+          )}
         </Toolbar>
         <ModalLogOut handleClick={handleClick} open={open} />
       </AppBar>
