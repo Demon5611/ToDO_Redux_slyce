@@ -5,7 +5,7 @@ services:
     container_name: pg-todo
     restart: always
     ports:
-      - "15432:5432" 
+      - "15432:5432"
     environment:
       POSTGRES_USER: OWN_NAME
       POSTGRES_PASSWORD: 123
