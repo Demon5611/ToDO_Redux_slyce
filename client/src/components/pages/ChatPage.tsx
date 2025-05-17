@@ -47,6 +47,7 @@ export default function ChatPage({
       socket.onerror = (error) => console.error('Front: onerror', error);
 
       socket.onmessage = (event: MessageEvent<string>) => {
+        console.log('WS raw:', event.data);
         try {
           const action: WSMessage = JSON.parse(event.data) as WSMessage;
           switch (action.type) {

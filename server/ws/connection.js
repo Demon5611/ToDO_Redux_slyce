@@ -12,21 +12,14 @@ const map = new Map();
 
 const connectionCb = (socket, request) => {
   const Uid = request.session.user.id;
-  console.log('socket====>', socket)
   map.set(Uid, { ws: socket, user: request.session.user });
 
-  function sendUsers(activeConnections) {
+  const sendUsers = (activeConnections) => {
+    const payload = [...activeConnections.values()].map(({ user }) => user);
     activeConnections.forEach(({ ws }) => {
-      ws.send(
-        JSON.stringify({
-          type: "SET_USERS", // уведомили всех юзеров, что новый юзер стал онлайн
-          payload: [...map.values()].map(({ user }) => user), // данные, которые отправляются как часть сообщения. ...map - коллекция и метод values()
-          // используется для получения всех значений коллекции.
-          // Затем используется map, чтобы преобразовать каждое значение, оставив только свойство user из каждого объекта.
-        })
-      );
+      ws.send(JSON.stringify({ type: "SET_USERS", payload }));
     });
-  }
+  };
 
   sendUsers(map);
 
@@ -34,92 +27,79 @@ const connectionCb = (socket, request) => {
     map.delete(Uid);
     sendUsers(map);
   });
-  // самый основной блок
+
   socket.on("message", async (message) => {
-    const actionFromFront = JSON.parse(message); // получили с клиента message  делаем из строки объект и достаем из него тип и данные
-    const { type, payload } = actionFromFront; // достаем из объекта тип и данные payload
-    switch (
-      // пишем ф-цию-reducer switch-case
-      type // в зав-ти от типа делаем нужную операцию
-    ) {
+    const actionFromFront = JSON.parse(message);
+    const { type, payload } = actionFromFront;
+
+    switch (type) {
       case SEND_MESSAGE:
-        console.log("Parsed action:", actionFromFront);
-        Message.create({ text: payload, Uid }).then(async (newMessage) =>
-        {
-          console.log('Creating message:', payload)
-          // записали в БД (поля ( text: , authorId: ), как в БД)
-          const newMessageWithAuthor = await Message.findOne({
-            // добавили автора сообщения для отправки на клиент
-            where: { id: newMessage.id }, // ищем сообщение по его id
-            include: User, // и добавляем автора
-          });
-          map.forEach(({ ws }) => {
-            // применили forEach что бы отправить ответ всем бзерам на клиент (что бы каждый у себя увидел ответ)
-            ws.send(
-              JSON.stringify({
-                // отправили на клиент все целиком
-                type: ADD_MESSAGE,
-                payload: newMessageWithAuthor,
-              })
-            );
-          });
-        });
-        break;
+  try {
+    const newMessage = await Message.create({ text: payload, Uid });
+    const newMessageWithAuthor = await Message.findOne({
+      where: { id: newMessage.id },
+      include: [{ model: User, as: "author" }],
+    });
+
+    if (!newMessageWithAuthor) {
+      console.warn('Message not found after creation');
+      return;
+    }
+
+    const cleanMessage = newMessageWithAuthor.toJSON();
+    if (cleanMessage.author) {
+      delete cleanMessage.author.password;
+    }
+
+    console.log('WS JSON to send:', JSON.stringify({
+      type: ADD_MESSAGE,
+      payload: cleanMessage,
+    }, null, 2));
+
+    map.forEach(({ ws }) => {
+      ws.send(JSON.stringify({
+        type: ADD_MESSAGE,
+        payload: cleanMessage,
+      }));
+    });
+  } catch (err) {
+    console.error('SEND_MESSAGE error:', err);
+  }
+  break;
+
+
       case STARTED_TYPING:
-        const actionStartedTyping = {
+        const startedTyping = {
           type: STARTED_TYPING,
-          payload: map.get(Uid).user.name,
+          payload: map.get(Uid).user.username,
         };
-        map.forEach(({ ws }) => {
-          ws.send(JSON.stringify(actionStartedTyping));
-        });
+        map.forEach(({ ws }) => ws.send(JSON.stringify(startedTyping)));
         break;
 
       case STOPPED_TYPING:
-        const actionStoppedTyping = { type: STOPPED_TYPING, payload: null };
-        map.forEach(({ ws }) => {
-          ws.send(JSON.stringify(actionStoppedTyping));
-        });
+        const stoppedTyping = { type: STOPPED_TYPING, payload: null };
+        map.forEach(({ ws }) => ws.send(JSON.stringify(stoppedTyping)));
         break;
 
       case DELETE_MESSAGE:
-        Message.findOne({ where: { id: payload } }).then(
-          async (targetMessage) => {
-            if (targetMessage.Uid !== Uid) return;
-            await Message.destroy({ where: { id: payload } });
-            map.forEach(({ ws }) => {
-              ws.send(
-                JSON.stringify({
-                  type: HIDE_MESSAGE,
-                  payload,
-                })
-              );
-            });
-          }
-        );
-        break;
+        Message.findOne({ where: { id: payload } }).then(async (target) => {
+          if (target?.Uid !== Uid) return;
+          await Message.destroy({ where: { id: payload } });
 
-      default:
+          map.forEach(({ ws }) => {
+            ws.send(JSON.stringify({ type: HIDE_MESSAGE, payload }));
+          });
+        });
         break;
     }
+
     console.log(`Received message ${message} from user ${Uid}`);
   });
 
   socket.on("close", () => {
-    map.delete(Uid); // удалили юзера из списка подключенных юзеров
-    sendUsers(map); // обновили список пользователей без юзера
+    map.delete(Uid);
+    sendUsers(map);
   });
 };
 
 module.exports = connectionCb;
-
-// socket.on  - ф-ция reducer (switch\case)
-// здесь описана основная логика работы сокета
-// нужно прописать 4 листенера onlose, onerror, onmessage, onopen. как описали все здесь - возвращаемся на фронт в Chatpage и
-// описываем логику (что будет, когда фронт (actionFromBackend) примет ADD_MESSAGE - ответ бэк)
-
-// с клиента из ChatPage приходят запросы сюда на сервер. сервер обраьатывает и отдает обратно
-// JSON.stringify({
-//   type: ADD_MESSAGE,
-//   payload,
-// }),
