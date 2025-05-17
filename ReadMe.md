@@ -4,6 +4,9 @@
 На server запускаем npm i && npm run server
 
 Запускаем Docker 
+запуск docker
+sudo systemctl start docker
+
 sudo chmod 666 /var/run/docker.sock - временно для всех пользователей 
 docker compose up -d
 cd server

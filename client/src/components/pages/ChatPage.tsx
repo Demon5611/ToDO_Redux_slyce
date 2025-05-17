@@ -11,7 +11,7 @@ type ChatTypeProps = {
 };
 
 type WSMessage =
-  | { type: 'SET_ALL_MESSAGES'; payload: UserType[] }
+  | { type: 'SET_ALL_MESSAGES'; payload: MessageType[] }
   | { type: 'SET_USERS'; payload: UserType[] }
   | { type: 'ADD_MESSAGE'; payload: MessageType }
   | { type: 'HIDE_MESSAGE'; payload: number }

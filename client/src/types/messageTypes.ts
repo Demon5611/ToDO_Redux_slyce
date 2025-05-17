@@ -10,7 +10,7 @@ export type MessageType = {
   };
 };
 
-type WSMessage =
+export type WSMessage =
   | { type: 'SET_ALL_MESSAGES'; payload: MessageType[] }
   | { type: 'SET_USERS'; payload: UserType[] }
   | { type: 'ADD_MESSAGE'; payload: MessageType }
