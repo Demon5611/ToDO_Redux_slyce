@@ -1,4 +1,4 @@
-import type { UserType } from "./userTypes";
+import type { UserType } from './userTypes';
 
 export type MessageType = {
   id: number;
@@ -11,6 +11,7 @@ export type MessageType = {
 };
 
 type WSMessage =
+  | { type: 'SET_ALL_MESSAGES'; payload: MessageType[] }
   | { type: 'SET_USERS'; payload: UserType[] }
   | { type: 'ADD_MESSAGE'; payload: MessageType }
   | { type: 'SET_TYPER'; payload: string }
@@ -24,7 +25,7 @@ export type StatusChatType =
   | 'STOPPED_TYPING'
   | 'ADD_MESSAGE'
   | 'SET_USERS'
+  | 'SET_ALL_MESSAGES'
   | 'HIDE_MESSAGE'
   | 'SET_TYPER'
   | 'CLEAR_TYPER';
-

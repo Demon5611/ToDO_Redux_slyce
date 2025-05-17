@@ -4,45 +4,47 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     background-color: #f9f9f9;
   }
-  
-.chat-wrapper {
-    background-color: #f7f7f7;
-    height: 80vh;
-    overflow-y: auto;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-  }
-  
-  .chat-bubble {
-    max-width: 70%;
-    padding: 10px 14px;
-    border-radius: 16px;
-    margin-bottom: 6px;
-    line-height: 1.3;
-    font-size: 0.95rem;
-    word-break: break-word;
-  }
-  
-  .chat-bubble.own {
-    background-color: #d1e7dd;
-    align-self: flex-end;
-    border-top-right-radius: 0;
-  }
-  
-  .chat-bubble.other {
-    background-color: #e2e3e5;
-    align-self: flex-start;
-    border-top-left-radius: 0;
-  }
-  
   .chat-author {
     font-size: 0.75rem;
-    font-weight: bold;
-    margin-bottom: 4px;
-    color: #6c757d;
+    font-weight: 500;
+    color: #666;
+    margin-bottom: 2px;
+  }
+  .chat-wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 0.5rem;
+    width: 100%;
+    height: 80vh;
+    overflow-y: auto;
+    background-color: #f9f9f9;
   }
   
-  .chat-text {
-    white-space: pre-wrap;
+  /* Базовый стиль пузыря */
+  .chat-bubble {
+    max-width: 60%;
+    padding: 10px 14px;
+    border-radius: 16px;
+    word-break: break-word;
+    display: inline-block;
+    background-color: #f1f0f0;
+    position: relative;
+  }
+  
+  /* Чужие — слева */
+  .chat-bubble.other {
+    align-self: flex-start;
+    background-color: #f1f0f0;
+    border-bottom-left-radius: 0;
+    text-align: left;
+  }
+  
+  /* Свои — справа */
+  .chat-bubble.own {
+    align-self: flex-end;
+    background-color: #dcf8c6;
+    border-bottom-right-radius: 0;
+    text-align: right;
   }
   

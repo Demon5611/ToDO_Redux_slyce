@@ -23,7 +23,8 @@ export default function MessageForm({
 
   const handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
-    submitMessageHandler(input);
+    if (!input.trim()) return;
+    submitMessageHandler(input.trim());
     setInput('');
   };
 
@@ -33,15 +34,11 @@ export default function MessageForm({
         <Form.Control
           onChange={handleChange}
           value={input}
-          placeholder="Recipient's username"
-          aria-label="Recipient's username"
-          aria-describedby="basic-addon2"
+          placeholder="Введите сообщение..."
         />
-        <InputGroup.Text id="basic-addon2">
-          <Button type="submit" variant="outline-primary">
-            <SendIcon />
-          </Button>
-        </InputGroup.Text>
+        <Button type="submit" variant="outline-primary">
+          <SendIcon />
+        </Button>
       </InputGroup>
     </Form>
   );

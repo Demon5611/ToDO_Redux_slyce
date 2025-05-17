@@ -11,6 +11,7 @@ type ChatTypeProps = {
 };
 
 type WSMessage =
+  | { type: 'SET_ALL_MESSAGES'; payload: UserType[] }
   | { type: 'SET_USERS'; payload: UserType[] }
   | { type: 'ADD_MESSAGE'; payload: MessageType }
   | { type: 'HIDE_MESSAGE'; payload: number }
@@ -47,10 +48,12 @@ export default function ChatPage({
       socket.onerror = (error) => console.error('Front: onerror', error);
 
       socket.onmessage = (event: MessageEvent<string>) => {
-        console.log('WS raw:', event.data);
         try {
           const action: WSMessage = JSON.parse(event.data) as WSMessage;
           switch (action.type) {
+            case 'SET_ALL_MESSAGES':
+              setMessages(action.payload);
+              break;
             case 'SET_USERS':
               setUsers(action.payload);
               break;
@@ -97,13 +100,13 @@ export default function ChatPage({
   const typingHandler = (isTyping: boolean): void => {
     if (!socketRef.current) return;
     const action = isTyping
-      ? { type: 'STARTED_TYPING', payload: logged.name }
+      ? { type: 'STARTED_TYPING', payload: logged.username }
       : { type: 'STOPPED_TYPING', payload: null };
     socketRef.current.send(JSON.stringify(action));
   };
 
   return (
-    <Container>
+    <Container fluid className="px-0">
       <Row>
         <Col xs={2}>
           <UsersList users={users} />
