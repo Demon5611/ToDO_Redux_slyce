@@ -2,9 +2,10 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const http = require("http");
-const { WebSocketServer } = require("ws"); // Изменили путь
 
+const { upgradeCb, wsServer } = require("./ws/wsServer");
 const connectionCb = require("./ws/connection");
+
 const postsRouter = require("./routes/postsRouter");
 const userRouter = require("./routes/userRouter");
 const resLocals = require("./middlewares/resLocals");
@@ -26,13 +27,11 @@ app.use(resLocals);
 app.use("/api/post", postsRouter);
 app.use("/api/user", userRouter);
 
-const server = http.createServer(app); // Использовали http.createServer с express
-const wsServer = new WebSocketServer({ server });
+const server = http.createServer(app);
 
-// server.on("upgrade", (request, socket, head) => {
-//   wsServer.handleUpgrade(request, socket, head, (ws) => {
-//     wsServer.emit("connection", ws, request);
-//   });
-// });
-// upgrade дает ошибку сразу после старта
+
+  server.on("upgrade", upgradeCb);
+wsServer.on("WsServer connection ==>", connectionCb);
+
+
 server.listen(PORT, () => console.log(`App has started on port ${PORT}`));

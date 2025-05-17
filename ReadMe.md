@@ -8,6 +8,6 @@ sudo chmod 666 /var/run/docker.sock - временно для всех поль�
 docker compose up -d
 cd server
 npm run db
-или через MackeFile
+или через MakeFile
 make reset //  drop → create → migrate → seed
 

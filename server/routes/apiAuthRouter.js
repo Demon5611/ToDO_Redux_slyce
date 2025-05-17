@@ -27,7 +27,7 @@ apiAuthRouter.post("/sms", async (req, res) => {
     }, 2000);
   } catch (error) {
     console.log(error);
-    return res.status(500).json(error);
+    return res.status(500).json(error)
   }
 });
 
@@ -66,7 +66,7 @@ apiAuthRouter.post("/code", async (req, res) => {
         .json({ message: messageByStatus(response.data.status) });
     }, 2000);
   } catch (error) {
-    console.log(error);
+    console.log('Posuble server not lounch',error);
     return res.status(500).json(error);
   }
 });

@@ -13,8 +13,10 @@ type ChatTypeProps = {
 type WSMessage =
   | { type: 'SET_USERS'; payload: UserType[] }
   | { type: 'ADD_MESSAGE'; payload: MessageType }
-  | { type: 'SET_TYPER'; payload: string }
   | { type: 'HIDE_MESSAGE'; payload: number }
+  | { type: 'SET_TYPER'; payload: string }
+  | { type: 'STARTED_TYPING'; payload: string }
+  | { type: 'STOPPED_TYPING'; payload: null }
   | { type: 'CLEAR_TYPER' };
 
 export default function ChatPage({
@@ -23,24 +25,23 @@ export default function ChatPage({
 }: ChatTypeProps): JSX.Element {
   const [messages, setMessages] = useState<MessageType[]>(initMessages);
   const [users, setUsers] = useState<UserType[]>([]);
-  const socketRef = useRef<WebSocket | null>(null); // Создаем ссылку на сокет скрола (обращаемся к последнему сообщению). useRef предоставляет доступ к DOM-элементу  - ОБЯЗАТЕЛЬНО ПРИ СОЗД ЧАТА на сокетах
-  const [wsConect, setwsConect] = useState<boolean>(false); // для отображения 'CHAT' красной если не подключен и зеленый, если подключен к сокетам
-  const [writer, setWriter] = useState<string | null>(null); // делаем индикацию кто печатает nuul | User['name']
+  const socketRef = useRef<WebSocket | null>(null);
+  const [wsConect, setwsConect] = useState<boolean>(false);
+  const [writer, setWriter] = useState<string | null>(null);
 
-  // поместили всю логику в useEffect и запускаем его только один раз и только при первом рендере компонента, когда он монтируется. Запускается сервер, запускается фронт и открывается соединение
   useEffect(() => {
-    function createSocket(): any {
-      const socket = new WebSocket('ws://localhost:3000'); // обьявили перем котор подкл к WS - идем на сервер и прописываем все там
+    function createSocket(): void {
+      const socket = new WebSocket('ws://localhost:3000');
+
       socket.onopen = () => {
-        // при откр сокета уст-м соединение с сервером
-        socketRef.current = socket; // положили соединение в обьект current.  изменяемые стейты сокета мы не можем хранить в useEffect (useEffect хранит в себе сост котор вызыв перерисовку компонента при изменении ), поэтому исп useRef
+        socketRef.current = socket;
         console.log('Front: Socket connected');
-        setwsConect(true); // отображаем 'CHAT'  зеленый, когда подключен
+        setwsConect(true);
       };
 
       socket.onclose = () => {
         console.log('Socket disconnected');
-        setTimeout(createSocket, 2000); // сделали переконект сокетов на случай. если свет моргнул и все отвалилось
+        setTimeout(createSocket, 2000);
       };
 
       socket.onerror = (error) => console.error('Front: onerror', error);
@@ -58,6 +59,12 @@ export default function ChatPage({
             case 'SET_TYPER':
               setWriter(action.payload);
               break;
+            case 'STARTED_TYPING':
+              setWriter(action.payload);
+              break;
+            case 'STOPPED_TYPING':
+              setWriter(null);
+              break;
             case 'HIDE_MESSAGE':
               setMessages((prev) => prev.filter((msg) => msg.id !== action.payload));
               break;
@@ -72,26 +79,26 @@ export default function ChatPage({
         }
       };
     }
+
     createSocket();
   }, []);
 
   const deleteMessageHandler = (id: number): void => {
     if (!socketRef.current) return;
-    const action = { type: 'DELETE_MESSAGE', payload: id };
-    socketRef.current.send(JSON.stringify(action));
+    socketRef.current.send(JSON.stringify({ type: 'DELETE_MESSAGE', payload: id }));
   };
 
   const submitMessageHandler = (inputText: string): void => {
     if (!socketRef.current) return;
-    const action = { type: 'SEND_MESSAGE', payload: inputText };
-    socketRef.current.send(JSON.stringify(action));
+    socketRef.current.send(JSON.stringify({ type: 'SEND_MESSAGE', payload: inputText }));
   };
 
   const typingHandler = (isTyping: boolean): void => {
-    if (isTyping && socketRef.current)
-      socketRef.current.send(JSON.stringify({ type: 'STARTED_TYPING' }));
-    else if (!isTyping && socketRef.current)
-      socketRef.current.send(JSON.stringify({ type: 'STOPPED_TYPING' }));
+    if (!socketRef.current) return;
+    const action = isTyping
+      ? { type: 'STARTED_TYPING', payload: logged.name }
+      : { type: 'STOPPED_TYPING', payload: null };
+    socketRef.current.send(JSON.stringify(action));
   };
 
   return (
@@ -107,8 +114,9 @@ export default function ChatPage({
             typingHandler={typingHandler}
             messages={messages}
             logged={logged}
+            writer={writer}
           />
-          {writer && `${writer} is typing...`}
+          {writer && <div className="fs-6 fw-light">{writer} печатает...</div>}
         </Col>
       </Row>
     </Container>

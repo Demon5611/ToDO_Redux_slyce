@@ -6,7 +6,7 @@ const {
   SEND_MESSAGE,
   STARTED_TYPING,
   STOPPED_TYPING,
-} = "./actions";
+} = require("./actions");
 
 const map = new Map();
 
@@ -43,7 +43,10 @@ const connectionCb = (socket, request) => {
       type // в зав-ти от типа делаем нужную операцию
     ) {
       case SEND_MESSAGE:
-        Message.create({ text: payload, Uid }).then(async (newMessage) => {
+        console.log("Parsed action:", actionFromFront);
+        Message.create({ text: payload, Uid }).then(async (newMessage) =>
+        {
+          console.log('Creating message:', payload)
           // записали в БД (поля ( text: , authorId: ), как в БД)
           const newMessageWithAuthor = await Message.findOne({
             // добавили автора сообщения для отправки на клиент

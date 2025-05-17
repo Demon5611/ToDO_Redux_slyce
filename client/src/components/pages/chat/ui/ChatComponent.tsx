@@ -11,6 +11,8 @@ type ChatComponentPropsType = {
   typingHandler: (isTyping: boolean) => void;
   messages: MessageType[];
   logged: UserType;
+  writer?: string | null;
+
 };
 export default function ChatComponent({
   deleteMessageHandler,
@@ -18,6 +20,7 @@ export default function ChatComponent({
   logged,
   submitMessageHandler,
   typingHandler,
+  writer,
 }: ChatComponentPropsType): JSX.Element {
   const writes = true;
   return (
@@ -27,11 +30,9 @@ export default function ChatComponent({
         messages={messages}
         logged={logged}
       />
-      <div className="fs-6 fw-light">{writes ? ' печатает...' : `\xa0`}</div>
+      <div className="fs-6 fw-light">{writer ? `${writer} печатает...` : '\xa0'}</div>
+
       <MessageForm submitMessageHandler={submitMessageHandler} typingHandler={typingHandler} />
     </Stack>
   );
 }
-// {writes ? 'Alex печатает...' : `\xa0`}
-// проверяет условие writes. Если writes истинно, то отображается текст 'Alex печатает...', в противном случае отображается неразрываемый пробел (\xa0).
-// Таким образом, когда условие ложно, компонент отображает пустой текстовый узел, который содержит только неразрываемый пробел.
