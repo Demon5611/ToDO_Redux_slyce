@@ -78,11 +78,6 @@ Message.findAll({
             delete cleanMessage.author.password; // 🛡️ Безопасность: удаляем пароль
           }
 
-          console.log("WS JSON to send:", JSON.stringify({
-            type: ADD_MESSAGE,
-            payload: cleanMessage,
-          }, null, 2));
-
           // Рассылка нового сообщения всем подключённым
           map.forEach(({ ws }) => {
             ws.send(JSON.stringify({

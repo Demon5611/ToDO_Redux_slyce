@@ -31,7 +31,7 @@ const server = http.createServer(app);
 
 
   server.on("upgrade", upgradeCb);
-wsServer.on("WsServer connection ==>", connectionCb);
+wsServer.on("connection", connectionCb);
 
 
 server.listen(PORT, () => console.log(`App has started on port ${PORT}`));

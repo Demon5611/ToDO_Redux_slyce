@@ -7,7 +7,6 @@ const wsServer = new WebSocketServer({
 });
 
 const upgradeCb = (request, socket, head) => {
-  console.log("⬅️ upgrade request received");
 
   sessionParser(request, {}, () => {
     if (!request.session?.user) {
@@ -20,7 +19,8 @@ const upgradeCb = (request, socket, head) => {
     console.log("✅ session parsed, upgrading...");
 
     wsServer.handleUpgrade(request, socket, head, (ws) => {
-      wsServer.emit("WsServer connection ==>", ws, request);
+      wsServer.emit("connection", ws, request);
+
     });
   });
 };

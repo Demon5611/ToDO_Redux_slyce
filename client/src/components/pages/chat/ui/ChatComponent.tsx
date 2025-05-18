@@ -1,5 +1,5 @@
-import React from 'react';
-import { Stack } from 'react-bootstrap';
+import React, { useEffect, useRef, useState } from 'react';
+import { Form, Button, Stack } from 'react-bootstrap';
 import MessageForm from './MessageForm'; // ✅ импорт готовой формы
 import type { MessageType } from '../../../../types/messageTypes';
 import type { UserType } from '../../../../types/userTypes';
@@ -21,8 +21,45 @@ export default function ChatComponent({
   typingHandler,
   writer,
 }: ChatComponentPropsType): JSX.Element {
+  const [inputText, setInputText] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // 👇 Обработка печати
+  useEffect(() => {
+    if (!inputText) {
+      typingHandler(false);
+      return;
+    }
+
+    typingHandler(true);
+
+    const timer = setTimeout(() => {
+      typingHandler(false);
+    }, 1500); // отключаем после паузы
+
+    return () => clearTimeout(timer);
+  }, [inputText]);
+
+  const handleSubmit = (e: React.FormEvent):void => {
+    e.preventDefault();
+    if (inputText.trim()) {
+      submitMessageHandler(inputText.trim());
+      setInputText('');
+      typingHandler(false);
+    }
+  };
+
   return (
-    <Stack gap={2} className="p-3 chat-wrapper d-flex flex-column">
+    <Form onSubmit={handleSubmit} className="d-flex mt-2">
+      <Form.Control
+        type="text"
+        placeholder="Введите сообщение..."
+        ref={inputRef}
+        value={inputText}
+        onChange={(e) => setInputText(e.target.value)}
+        className="me-2"
+      />
+        <Stack gap={2} className="p-3 chat-wrapper d-flex flex-column">
       {messages.map((msg) => {
         const isOwn = msg.author.id === logged.id;
         return (
@@ -37,5 +74,7 @@ export default function ChatComponent({
 
       <MessageForm submitMessageHandler={submitMessageHandler} typingHandler={typingHandler} />
     </Stack>
+      
+    </Form>
   );
 }
