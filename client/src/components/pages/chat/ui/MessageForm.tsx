@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import SendIcon from './icons_Chat/SendIcon';
 
@@ -12,20 +12,34 @@ export default function MessageForm({
   typingHandler,
 }: MessageFormPropsType): JSX.Element {
   const [input, setInput] = useState<string>('');
+  const typingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setInput(e.target.value);
-  };
+    const {value} = e.target;
+    setInput(value);
 
-  useEffect(() => {
-    typingHandler(input.length > 0);
-  }, [input, typingHandler]);
+    // при вводе сразу отправляем "печатает"
+    typingHandler(true);
+
+    // сбрасываем старый таймер
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+
+    // и ставим новый — если пользователь остановился, то через 1.5 сек будет false
+    typingTimeoutRef.current = setTimeout(() => {
+      typingHandler(false);
+    }, 1500);
+  };
 
   const handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
-    if (!input.trim()) return;
-    submitMessageHandler(input.trim());
+    const trimmed = input.trim();
+    if (!trimmed) return;
+    submitMessageHandler(trimmed);
     setInput('');
+    typingHandler(false); // после отправки отключаем индикатор
+    if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
   };
 
   return (

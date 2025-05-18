@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {  Button, Stack } from 'react-bootstrap';
+import { Button, Stack } from 'react-bootstrap';
 import MessageForm from './MessageForm'; // ✅ импорт готовой формы
 import type { MessageType } from '../../../../types/messageTypes';
 import type { UserType } from '../../../../types/userTypes';
@@ -21,30 +21,8 @@ export default function ChatComponent({
   typingHandler,
   writer,
 }: ChatComponentPropsType): JSX.Element {
-  const [inputText, setInputText] = useState('');
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  // 👇 Обработка печати
-  useEffect(() => {
-    if (!inputText) {
-      typingHandler(false);
-      return;
-    }
-
-    typingHandler(true);
-
-    const timer = setTimeout(() => {
-      typingHandler(false);
-    }, 1500); // отключаем после паузы
-
-    return () => clearTimeout(timer);
-  }, [inputText]);
-
-
   return (
-
-    
-        <Stack gap={2} className="p-3 chat-wrapper d-flex flex-column">
+    <Stack gap={2} className="p-3 chat-wrapper d-flex flex-column">
       {messages.map((msg) => {
         const isOwn = msg.author.id === logged.id;
         return (
@@ -64,7 +42,5 @@ export default function ChatComponent({
 
       <MessageForm submitMessageHandler={submitMessageHandler} typingHandler={typingHandler} />
     </Stack>
-      
-
   );
 }

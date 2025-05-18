@@ -6,7 +6,6 @@ import type { MessageType } from '../../types/messageTypes';
 import type { UserType } from '../../types/userTypes';
 
 type ChatTypeProps = {
-  messages: MessageType[];
   user: UserType;
 };
 
@@ -20,11 +19,9 @@ type WSMessage =
   | { type: 'STOPPED_TYPING'; payload: null }
   | { type: 'CLEAR_TYPER' };
 
-export default function ChatPage({
-  messages: initMessages,
-  user: logged,
-}: ChatTypeProps): JSX.Element {
-  const [messages, setMessages] = useState<MessageType[]>(initMessages);
+export default function ChatPage({ user: logged }: ChatTypeProps): JSX.Element {
+  const [messages, setMessages] = useState<MessageType[]>([]);
+
   const [users, setUsers] = useState<UserType[]>([]);
   const socketRef = useRef<WebSocket | null>(null);
   const [wsConect, setwsConect] = useState<boolean>(false);
@@ -50,6 +47,7 @@ export default function ChatPage({
       socket.onmessage = (event: MessageEvent<string>) => {
         try {
           const action: WSMessage = JSON.parse(event.data) as WSMessage;
+          console.log('[WS] Received action:', action);
           switch (action.type) {
             case 'SET_ALL_MESSAGES':
               setMessages(action.payload);
