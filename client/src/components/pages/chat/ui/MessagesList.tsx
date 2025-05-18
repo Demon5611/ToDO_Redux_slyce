@@ -1,5 +1,7 @@
 import React from 'react';
-import { Stack, Button } from 'react-bootstrap';
+import { Box, Stack, Typography, IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+
 import type { MessageType } from '../../../../types/messageTypes';
 import type { UserType } from '../../../../types/userTypes';
 
@@ -15,34 +17,55 @@ export default function MessagesList({
   logged,
 }: MessagesListPropsType): JSX.Element {
   return (
-    <div className="chat-wrapper">
-      <Stack gap={2}>
+    <Box className="chat-wrapper">
+      <Stack spacing={2}>
         {messages.map((msg) => {
           const isOwn = msg.author.id === logged.id;
 
           return (
-            <div key={msg.id}  className={`chat-row ${isOwn ? 'own' : 'other'}`}>
-            <div className={`chat-bubble ${isOwn ? 'own' : 'other'}`}>
-              <div className="chat-header">
-                <span className="chat-author">{msg.author.username}</span>
-                {isOwn && (
-                  <Button
-                    className="delete-btn"
-                    size="sm"
-                    onClick={() => deleteMessageHandler(msg.id)}
-                  >
-                    ✕
-                  </Button>
-                )}
-              </div>
-              <div className="chat-text">{msg.text}</div>
-            </div>
-          </div>
-          
-          
+            <Box key={msg.id} className={`chat-row ${isOwn ? 'own' : 'other'}`}>
+              <Box className={`chat-bubble ${isOwn ? 'own' : 'other'}`}>
+                <Box
+                  className="chat-header"
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '4px',
+                  }}
+                >
+                  <Typography variant="caption" className="chat-author">
+                    {msg.author.username}
+                  </Typography>
+
+                  {isOwn && (
+                    <IconButton
+                      size="small"
+                      onClick={() => deleteMessageHandler(msg.id)}
+                      sx={{
+                        fontSize: '0.75rem',
+                        padding: '2px 6px',
+                        backgroundColor: 'rgb(255, 157, 127)',
+                        color: '#000',
+                        borderRadius: '16px',
+                        '&:hover': {
+                          backgroundColor: 'rgb(255, 137, 107)',
+                        },
+                      }}
+                    >
+                      ✕
+                    </IconButton>
+                  )}
+                </Box>
+
+                <Typography variant="body1" className="chat-text">
+                  {typeof msg.text === 'string' ? msg.text : JSON.stringify(msg.text)}
+                </Typography>
+              </Box>
+            </Box>
           );
         })}
       </Stack>
-    </div>
+    </Box>
   );
 }
