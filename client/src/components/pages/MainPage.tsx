@@ -34,7 +34,7 @@ export default function MainPage(): JSX.Element {
             </li>
 
             <li>
-              Posts
+              ToDo
               <Typography variant="body2" component="div">
                 Пользователь видит свои посты, может их изменять, удалять...
               </Typography>

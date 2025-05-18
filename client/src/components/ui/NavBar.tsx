@@ -23,7 +23,7 @@ export default function NavBar(): JSX.Element {
     user.status === 'logged'
       ? [
           { to: '/', name: 'Main' },
-          { to: '/posts', name: 'Posts' },
+          { to: '/posts', name: 'ToDo' },
           { to: '/chat', name: 'Chat' },
           { to: '/admin', name: 'Admin' },
         ]
