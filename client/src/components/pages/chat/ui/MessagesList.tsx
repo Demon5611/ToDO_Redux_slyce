@@ -21,10 +21,10 @@ export default function MessagesList({
           const isOwn = msg.author.id === logged.id;
 
           return (
-            <div key={msg.id} className={`chat-row ${isOwn ? 'own' : 'other'}`}>
-              <div className={`chat-bubble ${isOwn ? 'own' : 'other'}`}>
-                <div className="chat-author">{msg.author.username}</div>
-                <div className="chat-text">{msg.text}</div>
+            <div className={`chat-row ${isOwn ? 'own' : 'other'}`}>
+            <div className={`chat-bubble ${isOwn ? 'own' : 'other'}`}>
+              <div className="chat-header">
+                <span className="chat-author">{msg.author.username}</span>
                 {isOwn && (
                   <Button
                     className="delete-btn"
@@ -35,7 +35,11 @@ export default function MessagesList({
                   </Button>
                 )}
               </div>
+              <div className="chat-text">{msg.text}</div>
             </div>
+          </div>
+          
+          
           );
         })}
       </Stack>

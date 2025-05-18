@@ -5,12 +5,15 @@
   height: 80vh;
   overflow-y: auto;
   background-color: #f9f9f9;
+  margin-top: 10px;
+  padding: 5px;
 }
 
 /* Сообщение обёрнуто в строку */
 .chat-row {
   display: flex;
   width: 100%;
+  
 }
 
 /* Свои — справа */
@@ -26,27 +29,45 @@
 /* Сообщение */
 .chat-bubble {
   display: flex;
+  flex-direction: column; /* теперь вертикально */
   max-width: 60%;
-  padding: 10px 14px ;
+  padding: 10px 14px;
   border-radius: 16px;
   word-break: break-word;
   position: relative;
   background-color: #f1f0f0;
   margin-bottom: 10px;
 }
-
 .chat-bubble.own {
   background-color: #dcf8c6;
   border-bottom-right-radius: 0;
   text-align: right;
 }
 
-.chat-bubble.other {
-  border-bottom-left-radius: 0;
-  text-align: left;
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
 }
-.delete-btn{
+
+.chat-author {
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: #666;
+}
+
+.chat-text {
+  font-size: 1rem;
+  word-wrap: break-word;
+}
+
+.delete-btn {
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border: none;
+  background-color: rgb(255, 157, 127);
+  color: #000;
   border-radius: 16px;
-  margin-left: 15px;
-  background-color: rgb(255, 214, 127);
 }
+
