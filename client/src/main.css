@@ -54,6 +54,7 @@
 /* Свои — справа */
 .chat-row.own {
   justify-content: flex-end;
+
 }
 
 /* Чужие — слева */

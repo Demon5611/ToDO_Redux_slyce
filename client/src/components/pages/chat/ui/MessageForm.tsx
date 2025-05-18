@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Button, Form, InputGroup } from 'react-bootstrap';
+import { Box, Button, TextField, InputAdornment, IconButton } from '@mui/material';
 import SendIcon from './icons_Chat/SendIcon';
 
 type MessageFormPropsType = {
@@ -43,17 +43,30 @@ export default function MessageForm({
   };
 
   return (
-    <Form onSubmit={handleSubmit} className="message-form">
-      <InputGroup className="input-group">
-        <Form.Control
-          onChange={handleChange}
-          value={input}
-          placeholder="Введите сообщение..."
-        />
-        <Button type="submit" variant="outline-primary">
-          <SendIcon />
-        </Button>
-      </InputGroup>
-    </Form>
+    <Box
+      component="form"
+      onSubmit={handleSubmit}
+      className="message-form"
+      sx={{ mt: 1, display: 'flex', gap: 1 }}
+    >
+      <TextField
+        fullWidth
+        variant="outlined"
+        size="small"
+        placeholder="Введите сообщение..."
+        value={input}
+        onChange={handleChange}
+        className="input-group"
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton type="submit" edge="end">
+                <SendIcon />
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+      />
+    </Box>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Box, Grid, Paper } from '@mui/material';
 import UsersList from './chat/ui/UsersList';
 import ChatComponent from './chat/ui/ChatComponent';
 import type { MessageType } from '../../types/messageTypes';
@@ -21,7 +21,6 @@ type WSMessage =
 
 export default function ChatPage({ user: logged }: ChatTypeProps): JSX.Element {
   const [messages, setMessages] = useState<MessageType[]>([]);
-
   const [users, setUsers] = useState<UserType[]>([]);
   const socketRef = useRef<WebSocket | null>(null);
   const [wsConect, setwsConect] = useState<boolean>(false);
@@ -66,6 +65,7 @@ export default function ChatPage({ user: logged }: ChatTypeProps): JSX.Element {
             case 'STOPPED_TYPING':
               setWriter(null);
               break;
+
             case 'HIDE_MESSAGE':
               setMessages((prev) => prev.filter((msg) => msg.id !== action.payload));
               break;
@@ -86,12 +86,12 @@ export default function ChatPage({ user: logged }: ChatTypeProps): JSX.Element {
 
   const deleteMessageHandler = (id: number): void => {
     if (!socketRef.current) return;
-    socketRef.current.send(JSON.stringify({ type: 'DELETE_MESSAGE', payload: id }));
+    socketRef.current?.send(JSON.stringify({ type: 'DELETE_MESSAGE', payload: id }));
   };
 
   const submitMessageHandler = (inputText: string): void => {
     if (!socketRef.current) return;
-    socketRef.current.send(JSON.stringify({ type: 'SEND_MESSAGE', payload: inputText }));
+    socketRef.current?.send(JSON.stringify({ type: 'SEND_MESSAGE', payload: inputText }));
   };
 
   const typingHandler = (isTyping: boolean): void => {
@@ -99,26 +99,33 @@ export default function ChatPage({ user: logged }: ChatTypeProps): JSX.Element {
     const action = isTyping
       ? { type: 'STARTED_TYPING', payload: logged.username }
       : { type: 'STOPPED_TYPING', payload: null };
-    socketRef.current.send(JSON.stringify(action));
+    socketRef.current?.send(JSON.stringify(action));
   };
 
   return (
-    <Container fluid className="px-2">
-      <Row>
-        <Col xs={2}>
-          <UsersList users={users} />
-        </Col>
-        <Col xs={10}>
-          <ChatComponent
-            deleteMessageHandler={deleteMessageHandler}
-            submitMessageHandler={submitMessageHandler}
-            typingHandler={typingHandler}
-            messages={messages}
-            logged={logged}
-            writer={writer}
-          />
-        </Col>
-      </Row>
-    </Container>
+    <Box sx={{ flexGrow: 1, p: 2 }}>
+      <Grid container spacing={2}>
+        <Grid item xs={3}>
+          <Paper elevation={2} sx={{ p: 2, height: '80vh', overflowY: 'auto' }}>
+            <UsersList users={users} />
+          </Paper>
+        </Grid>
+        <Grid item xs={9}>
+          <Paper
+            elevation={2}
+            sx={{ p: 2, height: '80vh', display: 'flex', flexDirection: 'column' }}
+          >
+            <ChatComponent
+              deleteMessageHandler={deleteMessageHandler}
+              submitMessageHandler={submitMessageHandler}
+              typingHandler={typingHandler}
+              messages={messages}
+              logged={logged}
+              writer={writer}
+            />
+          </Paper>
+        </Grid>
+      </Grid>
+    </Box>
   );
 }
