@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, FormControl, Paper, TextField, Typography } from '@mui/material';
+import { Box, Button,  FormControl,  Paper, TextField, Typography } from '@mui/material';
 import type { ChangeEvent, FormEvent } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { upDateHandlerThunk } from '../../redux/slices/user/UserThunks';
@@ -52,15 +52,16 @@ export default function AdminPage(): JSX.Element {
         flexDirection: 'column',
         alignItems: 'center',
         height: '100vh',
+
       }}
     >
-      <Paper elevation={9} sx={{ width: '50%', mb: 2 }}>
+      <Paper elevation={9} sx={{ width: '46%', mb: 2, mt:2, p:2 }}>
         <Typography sx={{ textAlign: 'center', mt: 2, mb: 2 }}>
           Можете изменить регистрационные данные в этой форме
         </Typography>
       </Paper>
 
-      <form onSubmit={(e) => void handleSubmit(e)} style={{ width: '50%' }}>
+      <FormControl onSubmit={(e) => void handleSubmit(e)} style={{ width: '50%', marginTop:"50px" }}>
         <TextField
           label="Name"
           name="username"
@@ -89,7 +90,7 @@ export default function AdminPage(): JSX.Element {
         <Button variant="contained" type="submit">
           Save
         </Button>
-      </form>
+      </FormControl>
     </Box>
   );
 }
