@@ -120,7 +120,6 @@ export default function ChatPage({
             logged={logged}
             writer={writer}
           />
-          {writer && <div className="fs-6 fw-light">{writer} печатает...</div>}
         </Col>
       </Row>
     </Container>

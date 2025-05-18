@@ -50,15 +50,8 @@ export default function ChatComponent({
   };
 
   return (
-    <Form onSubmit={handleSubmit} className="d-flex mt-2">
-      <Form.Control
-        type="text"
-        placeholder="Введите сообщение..."
-        ref={inputRef}
-        value={inputText}
-        onChange={(e) => setInputText(e.target.value)}
-        className="me-2"
-      />
+
+    
         <Stack gap={2} className="p-3 chat-wrapper d-flex flex-column">
       {messages.map((msg) => {
         const isOwn = msg.author.id === logged.id;
@@ -66,6 +59,11 @@ export default function ChatComponent({
           <div key={msg.id} className={`chat-bubble ${isOwn ? 'own' : 'other'}`}>
             <div className="chat-author">{msg.author.username}</div>
             <div className="chat-text">{msg.text}</div>
+            {isOwn && (
+              <Button className="delete-btn" size="sm" onClick={() => deleteMessageHandler(msg.id)}>
+                ✕
+              </Button>
+            )}
           </div>
         );
       })}
@@ -75,6 +73,6 @@ export default function ChatComponent({
       <MessageForm submitMessageHandler={submitMessageHandler} typingHandler={typingHandler} />
     </Stack>
       
-    </Form>
+
   );
 }
