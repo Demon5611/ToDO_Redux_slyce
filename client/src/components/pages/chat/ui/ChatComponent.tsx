@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Form, Button, Stack } from 'react-bootstrap';
+import {  Button, Stack } from 'react-bootstrap';
 import MessageForm from './MessageForm'; // ✅ импорт готовой формы
 import type { MessageType } from '../../../../types/messageTypes';
 import type { UserType } from '../../../../types/userTypes';
@@ -40,14 +40,6 @@ export default function ChatComponent({
     return () => clearTimeout(timer);
   }, [inputText]);
 
-  const handleSubmit = (e: React.FormEvent):void => {
-    e.preventDefault();
-    if (inputText.trim()) {
-      submitMessageHandler(inputText.trim());
-      setInputText('');
-      typingHandler(false);
-    }
-  };
 
   return (
 
