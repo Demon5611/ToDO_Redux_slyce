@@ -21,7 +21,7 @@ export default function MessagesList({
           const isOwn = msg.author.id === logged.id;
 
           return (
-            <div className={`chat-row ${isOwn ? 'own' : 'other'}`}>
+            <div key={msg.id}  className={`chat-row ${isOwn ? 'own' : 'other'}`}>
             <div className={`chat-bubble ${isOwn ? 'own' : 'other'}`}>
               <div className="chat-header">
                 <span className="chat-author">{msg.author.username}</span>

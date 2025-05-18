@@ -47,7 +47,6 @@ export default function ChatPage({ user: logged }: ChatTypeProps): JSX.Element {
       socket.onmessage = (event: MessageEvent<string>) => {
         try {
           const action: WSMessage = JSON.parse(event.data) as WSMessage;
-          console.log('[WS] Received action:', action);
           switch (action.type) {
             case 'SET_ALL_MESSAGES':
               setMessages(action.payload);
