@@ -14,7 +14,7 @@ export default function UsersList({ users }:UsersListTypeProps): JSX.Element {
       {users.map((user) => (
         <div className="p-2" key={user.id}>
           <DotOnlineIcon />
-          {user.name}
+          {user.username} - online
         </div>
       ))}
     </Stack>

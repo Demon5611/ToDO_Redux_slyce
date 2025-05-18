@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Stack } from 'react-bootstrap';
+import { Stack } from 'react-bootstrap';
 import MessagesList from './MessagesList';
 import MessageForm from './MessageForm'; // ✅ импорт готовой формы
 import type { MessageType } from '../../../../types/messageTypes';
@@ -29,9 +29,18 @@ export default function ChatComponent({
         messages={messages}
         logged={logged}
       />
-      
 
-      {writer && <div className="typing-indicator">{writer} печатает...</div>}
+      {/* Показываем индикатор, только если пишет кто-то другой */}
+      {writer && writer !== logged.username && (
+        <div className="typing-indicator">
+          {writer} печатает...
+          <span className="typing-dots">
+            <span>.</span>
+            <span>.</span>
+            <span>.</span>
+          </span>
+        </div>
+      )}
 
       <MessageForm submitMessageHandler={submitMessageHandler} typingHandler={typingHandler} />
     </Stack>
