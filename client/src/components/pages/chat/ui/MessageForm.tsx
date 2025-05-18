@@ -43,8 +43,8 @@ export default function MessageForm({
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <InputGroup className="mb-4">
+    <Form onSubmit={handleSubmit} className="message-form">
+      <InputGroup className="input-group">
         <Form.Control
           onChange={handleChange}
           value={input}

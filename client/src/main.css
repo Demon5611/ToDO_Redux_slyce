@@ -1,3 +1,38 @@
+.message-form {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: #fff;
+  border-top: 1px solid #ddd;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+}
+
+.message-form .form-control {
+  border-radius: 20px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  box-shadow: none;
+}
+
+.message-form .btn {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 5px;
+
+}
+.input-group{
+  display: flex;
+}
+/* ============================= */
+
 .chat-wrapper {
   display: flex;
   flex-direction: column;
@@ -70,4 +105,13 @@
   color: #000;
   border-radius: 16px;
 }
-
+.typing-indicator {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: #999;
+  margin-top: 4px;
+  padding-left: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
