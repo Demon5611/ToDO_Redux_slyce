@@ -1,110 +1,53 @@
+.chat-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  width: 100%;
+  height: 80vh;
+  overflow-y: auto;
+  background-color: #f9f9f9;
+}
 
-body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    background-color: #f9f9f9;
-  }
-  .chat-author {
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: #666;
-    margin-bottom: 2px;
-  }
-  .chat-wrapper {
-    display: flex;
-    flex-direction: column;
-    padding: 1rem;
-    gap: 0.5rem;
-    width: 100%;
-    height: 80vh;
-    overflow-y: auto;
-    background-color: #f9f9f9;
-  }
-  
-  /* Базовый стиль пузыря */
-  .chat-bubble {
-    max-width: 60%;
-    padding: 10px 14px;
-    border-radius: 16px;
-    word-break: break-word;
-    display: inline-block;
-    background-color: #f1f0f0;
-    position: relative;
-  }
-  
-  /* Чужие — слева */
-  .chat-bubble.other {
-    align-self: flex-start;
-    background-color: #f1f0f0;
-    border-bottom-left-radius: 0;
-    text-align: left;
-  }
-  
-  /* Свои — справа */
-  .chat-bubble.own {
-    align-self: flex-end;
-    background-color: #dcf8c6;
-    border-bottom-right-radius: 0;
-    text-align: right;
-  }
-  .delete-btn {
-    position: absolute;
-    top: 4px;
-    right: 2px;
-    font-size: 0.7rem;
-    padding: 2px 0px;
-    line-height: 1;
-    border: none;
-    background: transparent;
-    color: #c00;
-    transition: all 0.2s ease-in-out;
-    border-radius: 4px;
-  }
-  
-  .delete-btn:hover {
-    background-color: #c00;
-    color: #fff;
-    cursor: pointer;
-  }  
-  .typing-indicator {
-    font-size: 0.85rem;
-    font-style: italic;
-    color: #999;
-    margin-top: 4px;
-    padding-left: 8px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-  
-  .typing-dots span {
-    display: inline-block;
-    width: 4px;
-    height: 4px;
-    background-color: #999;
-    border-radius: 50%;
-    margin: 0 1px;
-    animation: blink 1.4s infinite;
-  }
-  
-  .typing-dots span:nth-child(2) {
-    animation-delay: 0.2s;
-  }
-  
-  .typing-dots span:nth-child(3) {
-    animation-delay: 0.4s;
-  }
-  
-  @keyframes blink {
-    0% {
-      opacity: 0.2;
-    }
-    20% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0.2;
-    }
-  }
-  
-  
+/* Сообщение обёрнуто в строку */
+.chat-row {
+  display: flex;
+  width: 100%;
+}
+
+/* Свои — справа */
+.chat-row.own {
+  justify-content: flex-end;
+}
+
+/* Чужие — слева */
+.chat-row.other {
+  justify-content: flex-start;
+}
+
+/* Сообщение */
+.chat-bubble {
+  display: flex;
+  max-width: 60%;
+  padding: 10px 14px ;
+  border-radius: 16px;
+  word-break: break-word;
+  position: relative;
+  background-color: #f1f0f0;
+  margin-bottom: 10px;
+}
+
+.chat-bubble.own {
+  background-color: #dcf8c6;
+  border-bottom-right-radius: 0;
+  text-align: right;
+}
+
+.chat-bubble.other {
+  border-bottom-left-radius: 0;
+  text-align: left;
+}
+.delete-btn{
+  border-radius: 16px;
+  margin-left: 15px;
+  background-color: rgb(255, 214, 127);
+}

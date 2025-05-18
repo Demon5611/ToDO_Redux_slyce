@@ -29,7 +29,7 @@ export default function MessageForm({
     // и ставим новый — если пользователь остановился, то через 1.5 сек будет false
     typingTimeoutRef.current = setTimeout(() => {
       typingHandler(false);
-    }, 1500);
+    }, 3000);
   };
 
   const handleSubmit = (e: React.FormEvent): void => {
@@ -38,13 +38,13 @@ export default function MessageForm({
     if (!trimmed) return;
     submitMessageHandler(trimmed);
     setInput('');
-    typingHandler(false); // после отправки отключаем индикатор
+    typingHandler(false); 
     if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
   };
 
   return (
     <Form onSubmit={handleSubmit}>
-      <InputGroup className="mb-3">
+      <InputGroup className="mb-4">
         <Form.Control
           onChange={handleChange}
           value={input}

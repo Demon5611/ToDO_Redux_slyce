@@ -1,6 +1,7 @@
 import type { UserType } from './userTypes';
 
 export type MessageType = {
+  Uid: number;
   id: number;
   text: string;
   author: {

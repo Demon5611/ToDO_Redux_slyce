@@ -104,7 +104,7 @@ export default function ChatPage({ user: logged }: ChatTypeProps): JSX.Element {
   };
 
   return (
-    <Container fluid className="px-0">
+    <Container fluid className="px-2">
       <Row>
         <Col xs={2}>
           <UsersList users={users} />

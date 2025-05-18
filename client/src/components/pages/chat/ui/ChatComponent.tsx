@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { Button, Stack } from 'react-bootstrap';
+import MessagesList from './MessagesList';
 import MessageForm from './MessageForm'; // ✅ импорт готовой формы
 import type { MessageType } from '../../../../types/messageTypes';
 import type { UserType } from '../../../../types/userTypes';
@@ -23,20 +24,12 @@ export default function ChatComponent({
 }: ChatComponentPropsType): JSX.Element {
   return (
     <Stack gap={2} className="p-3 chat-wrapper d-flex flex-column">
-      {messages.map((msg) => {
-        const isOwn = msg.author.id === logged.id;
-        return (
-          <div key={msg.id} className={`chat-bubble ${isOwn ? 'own' : 'other'}`}>
-            <div className="chat-author">{msg.author.username}</div>
-            <div className="chat-text">{msg.text}</div>
-            {isOwn && (
-              <Button className="delete-btn" size="sm" onClick={() => deleteMessageHandler(msg.id)}>
-                ✕
-              </Button>
-            )}
-          </div>
-        );
-      })}
+      <MessagesList
+        deleteMessageHandler={deleteMessageHandler}
+        messages={messages}
+        logged={logged}
+      />
+      
 
       {writer && <div className="typing-indicator">{writer} печатает...</div>}
 

@@ -16,7 +16,6 @@ const upgradeCb = (request, socket, head) => {
       return;
     }
 
-    console.log("✅ session parsed, upgrading...");
 
     wsServer.handleUpgrade(request, socket, head, (ws) => {
       wsServer.emit("connection", ws, request);
